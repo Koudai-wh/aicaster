@@ -7,7 +7,7 @@ AIがニュースを短くまとめて届ける静的サイトです。HTMLとJS
 - `index.html`: サイト本体、検索、閲覧履歴、おすすめ、広告枠
 - `news.json`: 表示するニュースデータ
 - `feeds.json`: RSS配信元
-- `scripts/update_news.js`: RSS取得とAI要約
+- `update_news.js`: RSS取得とAI要約
 - `.github/workflows/update-news.yml`: 毎日06:00（日本時間）の自動更新
 
 GitHubの`main`ブランチをAWS Amplify Hostingに接続します。ファイルを更新して`main`へ反映すると、自動でサイトが再公開されます。`news.json`が更新された場合も同じように反映されます。ビルドコマンドは不要で、公開ディレクトリはリポジトリのルートです。
