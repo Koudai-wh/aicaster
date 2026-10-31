@@ -1,0 +1,9 @@
+[
+  { "name": "NHKニュース 経済", "category": "経済", "url": "https://www.nhk.or.jp/rss/news/cat5.xml" },
+  { "name": "NHKニュース 国際", "category": "国際", "url": "https://www.nhk.or.jp/rss/news/cat6.xml" },
+  { "name": "NHKニュース 社会", "category": "社会", "url": "https://www.nhk.or.jp/rss/news/cat1.xml" },
+  { "name": "NHKニュース 科学・医療", "category": "科学", "url": "https://www.nhk.or.jp/rss/news/cat3.xml" },
+  { "name": "NHKニュース スポーツ", "category": "スポーツ", "url": "https://www.nhk.or.jp/rss/news/cat7.xml" },
+  { "name": "NHKニュース 文化・エンタメ", "category": "文化", "url": "https://www.nhk.or.jp/rss/news/cat2.xml" },
+  { "name": "ITmedia NEWS", "category": "テクノロジー", "url": "https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml" }
+]
