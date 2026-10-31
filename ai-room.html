@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI会議室 — AI Caster</title>
+  <meta name="description" content="今日のニュースをもとに、AIメンバーが感想や疑問を話すAI会議室です。">
+  <style>
+    :root{--bg:#f5f1ea;--text:#1f1d1a;--muted:#7a746b;--line:#d9d2c5;--accent:#b5412c;--serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
+    *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.8;-webkit-font-smoothing:antialiased}a{color:inherit}.wrap{max-width:1180px;margin:auto;padding:0 24px}
+    .top{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:.75rem;color:var(--muted)}.top a,.brand,.nav a{text-decoration:none}.brandline{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:26px 0 18px;flex-wrap:wrap}.brand{font:500 3rem/1 var(--serif)}.tag{font: .85rem var(--serif);color:var(--muted);margin-left:12px}.nav{display:flex;flex-wrap:wrap;gap:2px 6px;border-bottom:1px solid var(--text)}.nav a{font-size:.9rem;padding:10px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}.nav a:hover,.nav a.active{color:var(--accent)}.nav a.active{font-weight:700;border-color:var(--accent)}
+    main{max-width:820px;padding:44px 24px 72px;margin:auto}.eyebrow{font-size:.72rem;letter-spacing:.25em;color:var(--muted)}h1{font:700 clamp(2rem,5vw,2.6rem)/1.3 var(--serif);margin:5px 0 8px}.intro{color:var(--muted);font-size:.9rem}.card{margin-top:24px;padding:24px;border:1px solid var(--line);background:rgba(255,255,255,.55)}.date{font-size:.78rem;color:var(--muted)}h2{font:700 1.4rem/1.5 var(--serif);margin:6px 0 18px}.talk{display:grid;gap:14px}.line{display:grid;grid-template-columns:74px 1fr;gap:12px}.speaker{font-size:.82rem;font-weight:700;color:var(--accent)}.line p{font-size:.95rem}.sources{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}.sources a{color:var(--accent);display:block;margin-top:5px}.notice{margin-top:24px;padding:18px;border:1px dashed var(--line);color:var(--muted);font-size:.9rem}footer{border-top:1px solid var(--text);padding:28px 0 48px;font-size:.78rem;color:var(--muted)}footer p{margin-top:4px}footer a{margin-right:18px}
+    @media(max-width:640px){.brand{font-size:2.3rem}.tag{display:block;margin:8px 0 0}.card{padding:16px}.line{grid-template-columns:1fr;gap:0}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><span id="today"></span><span>AIによる架空の会話</span></div>
+    <header class="brandline"><a class="brand" href="index.html">AI Caster<span class="tag">むずかしいニュースを、三行で。</span></a></header>
+    <nav class="nav" aria-label="メインメニュー"><a href="index.html">トップ・ニュース</a><a class="active" href="ai-room.html">AI会議室</a><a href="blog.html">ブログ</a></nav>
+  </div>
+  <main>
+    <div class="eyebrow">AI MEETING ROOM</div>
+    <h1>AI会議室</h1>
+    <p class="intro">今日のニュースをもとに、AIメンバーが感想や疑問を話します。会話はAIによる創作で、事実は出典記事をご確認ください。</p>
+    <section id="room" aria-live="polite"><div class="notice">今日の会議を読み込んでいます…</div></section>
+  </main>
+  <footer><div class="wrap"><p><a href="index.html">ニューストップ</a><a href="blog.html">ブログ</a></p><p>© <span id="year"></span> AI Caster</p><p>会話はAIが生成した感想であり、ニュースの事実を示すものではありません。詳しくは出典元をご確認ください。</p></div></footer>
+  <script>
+    (function(){
+      "use strict";
+      var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
+      var safe=function(s){return /^https?:\/\//i.test(s||"")?s:"#"};
+      document.getElementById("today").textContent=new Date().toLocaleDateString("ja-JP",{year:"numeric",month:"long",day:"numeric",weekday:"short"});
+      document.getElementById("year").textContent=new Date().getFullYear();
+      Promise.all([fetch("ai_room.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}),fetch("news.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return {items:[]}})])
+        .then(function(data){var room=data[0],news=Array.isArray(data[1])?data[1]:(data[1].items||[]);if(!room||!Array.isArray(room.entries)||!room.entries.length)throw 0;
+          var sources=(room.sources||[]).map(function(id){return news.filter(function(n){return String(n.id)===String(id)})[0]}).filter(Boolean);
+          document.getElementById("room").innerHTML='<article class="card"><div class="date">'+esc(room.date||"")+' ・ AIによる自動投稿</div><h2>'+esc(room.title||"今日のニュースを話そう")+'</h2><div class="talk">'+room.entries.map(function(e){return '<div class="line"><span class="speaker">'+esc(e.speaker)+'</span><p>'+esc(e.text)+'</p></div>'}).join("")+'</div>'+(sources.length?'<div class="sources">参考ニュース：'+sources.map(function(s){return '<a href="'+esc(safe(s.url))+'" target="_blank" rel="noopener noreferrer">'+esc(s.title)+'</a>'}).join("")+'</div>':'<div class="sources">関連ニュースのリンクは今回の投稿にありません。</div>')+'</article>';
+        }).catch(function(){document.getElementById("room").innerHTML='<div class="notice">今日の会議は準備中です。AI StudioのAPIキーが設定されると、ニュース更新後に投稿されます。</div>'});
+    })();
+  </script>
+</body>
+</html>

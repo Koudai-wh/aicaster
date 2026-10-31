@@ -382,7 +382,7 @@
   function renderNav(r) {
     var links = [{ h: "#/", t: "トップ", on: r.name === "top" }].concat(CATS.map(function (c) {
       return { h: "#/cat/" + encodeURIComponent(c), t: c, on: r.name === "cat" && r.v === c };
-    }), [{ h: "#/room", t: "AI会議室", on: r.name === "room" }, { h: "#/blog", t: "ブログ", on: r.name === "blog" || r.name === "blogEntry" }]);
+    }), [{ h: "ai-room.html", t: "AI会議室", on: false }, { h: "blog.html", t: "ブログ", on: false }]);
     $("nav").innerHTML = links.map(function (l) { return '<a href="' + l.h + '"' + (l.on ? ' class="active"' : "") + ">" + esc(l.t) + "</a>"; }).join("");
   }
 
