@@ -1,6 +1,8 @@
 name: Update news
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: "0 21 * * *"   # 毎日 06:00 JST
   workflow_dispatch:
@@ -27,9 +29,50 @@ jobs:
             exit 0
           fi
           node update_news.js
-      - name: Commit news.json
+      - name: Create daily AI meeting room
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-3.8-flash
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "GEMINI_API_KEY is not set; skipping AI meeting room."
+            exit 0
+          fi
+          node update_ai_room.js
+      - name: Commit generated content
         run: |
           git config user.name "news-bot"
           git config user.email "news-bot@users.noreply.github.com"
-          git add news.json
-          git diff --cached --quiet || (git commit -m "Update news" && git push)
+          git add news.json ai_room.json
+          git diff --cached --quiet || (git commit -m "Update daily news and AI room" && git push)
+      - name: Check InfinityFree deployment settings
+        id: ftp-config
+        env:
+          FTP_SERVER: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.INFINITYFREE_FTP_DIR }}
+        run: |
+          if [ -n "$FTP_SERVER" ] && [ -n "$FTP_USERNAME" ] && [ -n "$FTP_PASSWORD" ] && [ -n "$FTP_DIR" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "InfinityFree FTP settings are incomplete; skipping deployment."
+          fi
+      - name: Deploy static site to InfinityFree
+        if: ${{ steps.ftp-config.outputs.enabled == 'true' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          username: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          password: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          server-dir: ${{ secrets.INFINITYFREE_FTP_DIR }}
+          protocol: ftps
+          local-dir: ./
+          exclude: |
+            **/.git*/**
+            **/.github/**
+            README.md
+            feeds.json
+            update_news.js
+            update_ai_room.js

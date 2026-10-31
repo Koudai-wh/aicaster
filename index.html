@@ -79,11 +79,30 @@
     .meta .date { display: flex; gap: 6px; }
     .meta .read { margin-top: 0; }
     .article h3 { font-size: 1.2rem; }
+    .room-card, .blog-article { padding: 16px; }
+    .room-line { grid-template-columns: 1fr; gap: 0; }
   }
 
   .more { display: block; margin: 28px auto 0; padding: 10px 36px; border: 1px solid var(--text); font-size: .85rem; }
   .more:hover { background: var(--text); color: #fff; }
   .notice-box { margin-top: 24px; padding: 18px; border: 1px dashed var(--line); color: var(--muted); font-size: .88rem; }
+
+  /* AI会議室・ブログ */
+  .room-card, .blog-card, .blog-article { margin-top: 20px; padding: 22px; border: 1px solid var(--line); background: rgba(255,255,255,.55); }
+  .room-date, .blog-meta { color: var(--muted); font-size: .78rem; }
+  .room-title, .blog-title { font-family: var(--serif); font-size: 1.35rem; line-height: 1.5; margin: 5px 0 14px; }
+  .room-talk { display: grid; gap: 12px; }
+  .room-line { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: start; }
+  .room-speaker { color: var(--accent); font-size: .8rem; font-weight: 700; }
+  .room-line p { font-size: .92rem; }
+  .room-sources { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 12px; font-size: .78rem; color: var(--muted); }
+  .room-sources a { color: var(--accent); }
+  .blog-card { text-decoration: none; display: block; }
+  .blog-card:hover { border-color: var(--accent); }
+  .blog-title { margin-bottom: 6px; }
+  .blog-excerpt { color: var(--muted); font-size: .88rem; }
+  .blog-body { white-space: pre-line; line-height: 2; margin-top: 20px; }
+  .back-link { display: inline-block; margin-top: 24px; color: var(--accent); }
 
   /* sidebar */
   aside h4 { font-family: var(--serif); font-size: 1.05rem; padding-bottom: 8px; border-bottom: 1px solid var(--text); display: flex; justify-content: space-between; align-items: baseline; }
@@ -176,7 +195,7 @@
     { id: "sample-b", category: "テクノロジー", title: "【サンプル】新しいAIモデルが発表、処理速度が大幅に向上", summary: ["従来より高速に応答できる新モデルが発表された。", "長文の読み込みや要約の精度も改善されたとされる。", "企業向けが先行し、一般向けは順次開始予定。"], tags: ["AI", "半導体"], source: "サンプル", url: "https://example.com/", date: new Date(Date.now() - 3600e3).toISOString() }
   ];
 
-  var state = { items: [], updated: null, limit: PAGE };
+  var state = { items: [], updated: null, limit: PAGE, room: null, blogs: [] };
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var safeUrl = function (u) { return /^https?:\/\//i.test(u || "") ? u : "#"; };
@@ -267,6 +286,9 @@
     if ((m = h.match(/^\/search\/(.*)$/))) return { name: "search", v: m[1] };
     if (h === "/foryou") return { name: "foryou" };
     if (h === "/history") return { name: "history" };
+    if (h === "/room") return { name: "room" };
+    if (h === "/blog") return { name: "blog" };
+    if ((m = h.match(/^\/blog\/([^/]+)$/))) return { name: "blogEntry", v: m[1] };
     return { name: "top" };
   }
 
@@ -304,6 +326,23 @@
       if (!hist.length) return s2 + '<div class="notice-box">閲覧履歴はまだありません。</div>';
       return s2 + '<ul class="hist" style="margin-top:20px;border-top:1px solid var(--line)">' + hist.map(histItem).join("") +
         '</ul><button class="more" data-clear>履歴をすべて削除</button>';
+    }
+    if (r.name === "room") {
+      var room = state.room;
+      if (!room || !Array.isArray(room.entries) || !room.entries.length) return head("AI MEETING ROOM", "AI会議室", "今日のニュースをもとに、AIメンバーが話し合います。") + '<div class="notice-box">今日の会議はまだ準備中です。ニュース更新後に投稿されます。</div>';
+      var sourceItems = (room.sources || []).map(function (id) { return state.items.filter(function (x) { return String(x.id) === String(id); })[0]; }).filter(Boolean);
+      return head("AI MEETING ROOM", "AI会議室", "ニュースを読んだAIメンバーの、架空の会話です。") +
+        '<article class="room-card"><div class="room-date">' + esc(room.date || "") + ' ・ AIによる自動投稿</div><h3 class="room-title">' + esc(room.title || "今日のニュースを話そう") + '</h3><div class="room-talk">' + room.entries.map(function (e) { return '<div class="room-line"><span class="room-speaker">' + esc(e.speaker) + '</span><p>' + esc(e.text) + '</p></div>'; }).join("") + '</div>' +
+        (sourceItems.length ? '<div class="room-sources">参考ニュース: ' + sourceItems.map(function (i) { return '<a href="' + esc(safeUrl(i.url)) + '" target="_blank" rel="noopener noreferrer">' + esc(i.title) + '</a>'; }).join(" ／ ") + '</div>' : '<div class="room-sources">ニュースの見出しをもとにした会話です。最新の事実は出典記事をご確認ください。</div>') + '</article>';
+    }
+    if (r.name === "blog") {
+      var posts = state.blogs.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+      return head("BLOG", "ブログ", "AI Casterからのお知らせや、ニュースの読み方などをお届けします。") + (posts.length ? posts.map(function (p) { return '<a class="blog-card" href="#/blog/' + encodeURIComponent(p.slug) + '"><div class="blog-meta">' + esc(p.date) + (p.category ? ' ・ ' + esc(p.category) : '') + '</div><h3 class="blog-title">' + esc(p.title) + '</h3><p class="blog-excerpt">' + esc(p.excerpt || "") + '</p></a>'; }).join("") : '<div class="notice-box">ブログ記事はまだありません。</div>');
+    }
+    if (r.name === "blogEntry") {
+      var post = state.blogs.filter(function (p) { return p.slug === r.v; })[0];
+      if (!post) return head("BLOG", "記事が見つかりません") + '<a class="back-link" href="#/blog">ブログ一覧へ戻る</a>';
+      return '<article class="blog-article"><div class="blog-meta">' + esc(post.date) + (post.category ? ' ・ ' + esc(post.category) : '') + '</div><h2 class="page-title">' + esc(post.title) + '</h2><div class="blog-body">' + esc(post.body || "") + '</div><a class="back-link" href="#/blog">← ブログ一覧へ戻る</a></article>';
     }
     return "";
   }
@@ -343,7 +382,7 @@
   function renderNav(r) {
     var links = [{ h: "#/", t: "トップ", on: r.name === "top" }].concat(CATS.map(function (c) {
       return { h: "#/cat/" + encodeURIComponent(c), t: c, on: r.name === "cat" && r.v === c };
-    }));
+    }), [{ h: "#/room", t: "AI会議室", on: r.name === "room" }, { h: "#/blog", t: "ブログ", on: r.name === "blog" || r.name === "blogEntry" }]);
     $("nav").innerHTML = links.map(function (l) { return '<a href="' + l.h + '"' + (l.on ? ' class="active"' : "") + ">" + esc(l.t) + "</a>"; }).join("");
   }
 
@@ -386,10 +425,12 @@
   $("today").textContent = new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" });
   $("year").textContent = new Date().getFullYear();
 
-  fetch("news.json", { cache: "no-store" })
-    .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
-    .catch(function () { return { items: FALLBACK }; })
-    .then(function (data) {
+  Promise.all([
+    fetch("news.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return { items: FALLBACK }; }),
+    fetch("ai_room.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return null; }),
+    fetch("blog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return []; })
+  ]).then(function (dataSets) {
+      var data = dataSets[0];
       var items = Array.isArray(data) ? data : (data.items || []);
       state.items = items.filter(function (i) { return i && i.title && i.id != null; })
         .sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
@@ -398,6 +439,8 @@
         var u = new Date(state.updated);
         if (!isNaN(u)) $("updated").textContent = "　最終更新 " + pad(u.getHours()) + ":" + pad(u.getMinutes());
       }
+      state.room = dataSets[1];
+      state.blogs = Array.isArray(dataSets[2]) ? dataSets[2] : (dataSets[2].posts || []);
       render();
     });
 })();
