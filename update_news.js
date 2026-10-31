@@ -3,11 +3,11 @@
 /*
   ニュース自動収集 + AI要約スクリプト
   1. feeds.json のRSSを取得
-  2. 未処理の記事だけをClaude APIで「3行要約 + タグ」に変換
+  2. 未処理の記事だけをGemini APIで「3行要約 + タグ」に変換
   3. news.json に書き出す(既存の要約は再利用するのでAPI費用を抑えられます)
 
-  必要: Node.js 18以上 / 環境変数 ANTHROPIC_API_KEY
-  任意: ANTHROPIC_MODEL(既定 claude-haiku-4-5-20251001), MAX_NEW_PER_RUN(既定 20),
+  必要: Node.js 18以上 / 環境変数 GEMINI_API_KEY
+  任意: GEMINI_MODEL(既定 gemini-3.8-flash), MAX_NEW_PER_RUN(既定 20),
         MAX_KEEP(既定 200), KEEP_DAYS(既定 7)
 */
 const fs = require("fs");
@@ -17,7 +17,7 @@ const crypto = require("crypto");
 const ROOT = __dirname;
 const FEEDS_PATH = path.join(ROOT, "feeds.json");
 const OUT_PATH = path.join(ROOT, "news.json");
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 const MAX_NEW = Number(process.env.MAX_NEW_PER_RUN || 20);
 const MAX_KEEP = Number(process.env.MAX_KEEP || 200);
 const KEEP_DAYS = Number(process.env.KEEP_DAYS || 7);
@@ -65,7 +65,7 @@ async function fetchText(url) {
   } finally { clearTimeout(timer); }
 }
 
-/* ---------- Claude APIで要約 ---------- */
+/* ---------- Gemini APIで要約 ---------- */
 function buildPrompt(it) {
   return [
     "次のニュースの見出しと概要だけを根拠に、読者向けの短い要約を作ってください。",
@@ -85,19 +85,25 @@ function buildPrompt(it) {
   ].join("\n");
 }
 
-async function callClaude(prompt, attempt = 0) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+async function callGemini(prompt, attempt = 0) {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`, {
     method: "POST",
-    headers: { "content-type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
-    body: JSON.stringify({ model: MODEL, max_tokens: 500, messages: [{ role: "user", content: prompt }] }),
+    headers: { "content-type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY },
+    body: JSON.stringify({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 500, responseMimeType: "application/json" },
+    }),
   });
   if ((res.status === 429 || res.status >= 500) && attempt < 2) {
     await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
-    return callClaude(prompt, attempt + 1);
+    return callGemini(prompt, attempt + 1);
   }
   if (!res.ok) throw new Error("API " + res.status + " " + (await res.text()).slice(0, 200));
   const data = await res.json();
-  return (data.content || []).map((c) => c.text || "").join("");
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const text = parts.map((part) => part.text || "").join("");
+  if (!text) throw new Error("Gemini APIから要約テキストが返りませんでした。");
+  return text;
 }
 
 function parseSummary(text) {
@@ -120,7 +126,7 @@ function interleave(groups) {
 }
 
 async function main() {
-  if (!process.env.ANTHROPIC_API_KEY) { console.error("ANTHROPIC_API_KEY が設定されていません。"); process.exit(1); }
+  if (!process.env.GEMINI_API_KEY) { console.error("GEMINI_API_KEY が設定されていません。"); process.exit(1); }
   const feeds = JSON.parse(fs.readFileSync(FEEDS_PATH, "utf8"));
   let existing = [];
   try { existing = JSON.parse(fs.readFileSync(OUT_PATH, "utf8")).items || []; } catch {}
@@ -144,7 +150,7 @@ async function main() {
   const added = [];
   for (const it of candidates) {
     try {
-      const r = parseSummary(await callClaude(buildPrompt(it)));
+      const r = parseSummary(await callGemini(buildPrompt(it)));
       if (!r) { console.log("スキップ: " + it.title); continue; }
       added.push({ id: it.id, category: it.category, title: it.title, summary: r.summary, tags: r.tags, source: it.source, url: it.url, date: it.date });
       console.log("要約OK: " + it.title);

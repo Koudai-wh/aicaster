@@ -18,12 +18,12 @@ jobs:
           node-version: 20
       - name: Fetch and summarize news
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MAX_NEW_PER_RUN: 10
-          ANTHROPIC_MODEL: claude-haiku-4-5-20251001
+          GEMINI_MODEL: gemini-3.8-flash
         run: |
-          if [ -z "$ANTHROPIC_API_KEY" ]; then
-            echo "ANTHROPIC_API_KEY is not set; skipping news update."
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "GEMINI_API_KEY is not set; skipping news update."
             exit 0
           fi
           node update_news.js

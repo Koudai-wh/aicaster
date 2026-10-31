@@ -14,9 +14,9 @@ GitHubの`main`ブランチをAWS Amplify Hostingに接続します。ファイ�
 
 ## ニュース自動更新
 
-自動更新にはAnthropic APIキーが必要です。GitHubリポジトリの **Settings → Secrets and variables → Actions** で `ANTHROPIC_API_KEY` という名前のSecretを作り、値はGitHub上に直接入力してください。チャットやコードには貼らないでください。キーをまだ設定していない場合、定期更新はスキップされます。設定後はActionsタブから「Update news」を手動実行して確認できます。
+自動更新にはGoogle AI Studioで発行したGemini APIキーが必要です。GitHubリポジトリの **Settings → Secrets and variables → Actions** で `GEMINI_API_KEY` という名前のSecretを作り、値はGitHub上に直接入力してください。チャットやコードには貼らないでください。キーをまだ設定していない場合、定期更新はスキップされます。設定後はActionsタブから「Update news」を手動実行して確認できます。
 
-1回の実行で新しく要約する上限は10件です。モデルは `claude-haiku-4-5-20251001` です。必要に応じてワークフロー内の `MAX_NEW_PER_RUN` や実行スケジュールを調整してください。
+1回の実行で新しく要約する上限は10件です。モデルは `gemini-3.8-flash` です。必要に応じてワークフロー内の `MAX_NEW_PER_RUN` や実行スケジュールを調整してください。
 
 ## 忍者AdMax
 
