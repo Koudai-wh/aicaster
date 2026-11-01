@@ -8,17 +8,17 @@
   <meta name="description" content="AIのニュース、使い方、暮らしへの影響を気軽に読めるブログです。">
   <style>
     :root{--bg:#ffffff;--paper:#ffffff;--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#1769aa;--blue-soft:#e8f1f8;--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.85;-webkit-font-smoothing:antialiased}a{color:inherit}.wrap{width:min(100% - 40px,860px);margin:auto}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.85;-webkit-font-smoothing:antialiased}a{color:inherit}.wrap{width:min(100% - 40px,1120px);margin:auto}
     :focus-visible{outline:3px solid #f0c000;outline-offset:3px}
     .return{padding:22px 0 14px}.return a{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:.9rem;font-weight:650;text-decoration:none}.return a:hover{text-decoration:underline;text-underline-offset:4px}
     .masthead{padding:38px 0 28px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--blue);font-size:.78rem;font-weight:650;letter-spacing:.04em}.brand{margin:7px 0 8px;font-size:clamp(2.8rem,8vw,4.2rem);line-height:1.12;letter-spacing:-.04em;font-weight:760}.tagline{margin:0;color:var(--muted);font-size:1rem}
-    main{padding:34px 0 72px}.section-title{font-size:1.2rem;line-height:1.5;margin:0 0 16px}.intro{margin-bottom:42px}.intro p{margin:0;color:var(--muted)}
-    .write-post{margin:0 0 34px;padding:14px 0;border-bottom:1px solid var(--line)}.write-post a{color:var(--blue);font-size:.9rem;font-weight:700;text-decoration:none}.write-post a:hover{text-decoration:underline;text-underline-offset:3px}.write-post p{margin:3px 0 0;color:var(--muted);font-size:.78rem}.posts{display:grid;gap:0;border-top:1px solid var(--line)}.post{display:block;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:22px 8px;text-decoration:none;transition:background-color .18s ease,transform .18s ease}.post:hover{background:#f7f9fb;transform:none}.meta{font-size:.78rem;color:var(--muted)}.category{display:inline-block;margin-left:8px;color:var(--blue);font-size:.78rem;font-weight:650}h2{font-family:var(--sans);font-size:1.3rem;line-height:1.5;margin:8px 0}.excerpt{margin:0;color:var(--muted);font-size:.92rem}
+    .page-grid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:64px;align-items:start;padding:34px 0 72px}.page-grid main{min-width:0}.profile{position:sticky;top:20px;padding:18px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}.profile h2{font-size:1rem;margin:0 0 8px}.profile p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.8}main{padding:0}.section-title{font-size:1.2rem;line-height:1.5;margin:0 0 16px}.intro{margin-bottom:42px}.intro p{margin:0;color:var(--muted)}
+.posts{display:grid;gap:0;border-top:1px solid var(--line)}.post{display:block;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:22px 8px;text-decoration:none;transition:background-color .18s ease,transform .18s ease}.post:hover{background:#f7f9fb;transform:none}.meta{font-size:.78rem;color:var(--muted)}.category{display:inline-block;margin-left:8px;color:var(--blue);font-size:.78rem;font-weight:650}h2{font-family:var(--sans);font-size:1.3rem;line-height:1.5;margin:8px 0}.excerpt{margin:0;color:var(--muted);font-size:.92rem}
     .article{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:20px 0 38px}.article h1{font-family:var(--sans);font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.45;letter-spacing:-.025em;margin:13px 0 0}.article .body{white-space:pre-line;line-height:2.15;font-size:1.02rem;margin-top:28px}.article-footer{border-top:1px solid var(--line);margin-top:34px;padding-top:18px}.back-list{color:var(--blue);text-decoration:none;font-weight:650}.back-list:hover{text-decoration:underline;text-underline-offset:4px}
     .author{margin-top:46px;padding:22px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}.author h2{font-size:1rem;margin:0 0 4px}.author p{margin:0;color:var(--muted);font-size:.88rem}
-    .comments{margin-top:48px;padding-top:28px;border-top:1px solid var(--line)}.comments h2{font-size:1.2rem;margin:0 0 8px}.comments-intro,.comments-pending{font-size:.88rem;color:var(--muted)}.comments-pending{background:var(--paper);border:1px solid var(--line);border-radius:0;padding:16px;margin-top:16px}
+    .more-blogs{margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}.more-blogs h2{font-size:1.15rem;margin:0 0 10px}.more-blogs ul{list-style:none;border-top:1px solid var(--line)}.more-blogs li{padding:14px 0;border-bottom:1px solid var(--line)}.more-blogs a{color:var(--blue);font-weight:650;text-decoration:none}.more-blogs a:hover{text-decoration:underline;text-underline-offset:3px}.more-blogs p{margin:3px 0 0;color:var(--muted);font-size:.88rem}.comments{margin-top:48px;padding-top:28px;border-top:1px solid var(--line)}.comments h2{font-size:1.2rem;margin:0 0 8px}.comments-intro,.comments-pending{font-size:.88rem;color:var(--muted)}.comments-pending{background:var(--paper);border:1px solid var(--line);border-radius:0;padding:16px;margin-top:16px}
     .empty{padding:20px 0;background:var(--paper);border:0;border-top:1px solid var(--line);border-radius:0;color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0 38px;color:var(--muted);font-size:.78rem}footer p{margin:0}
-    @media(max-width:600px){.wrap{width:min(100% - 32px,860px)}.return{padding-top:16px}.masthead{padding:34px 0 24px}.tagline{font-size:.92rem}.post{padding:18px 6px}.posts{gap:0}main{padding-top:26px}.author{padding:18px 0}}
+    @media(max-width:760px){.wrap{width:min(100% - 32px,640px)}.return{padding-top:16px}.masthead{padding:26px 0 20px}.brand{font-size:2.8rem}.tagline{font-size:.92rem}.page-grid{grid-template-columns:1fr;gap:28px;padding:26px 0 52px}.profile{position:static;grid-row:1;padding:14px 0}.page-grid main{grid-row:2}.post{padding:18px 6px}.posts{gap:0}}
 
     @keyframes gentle-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
     @media(prefers-reduced-motion:no-preference){.return,.masthead,main{animation:gentle-enter .42s ease-out both}.masthead{animation-delay:.05s}main{animation-delay:.1s}.post{transition:background-color .18s ease,transform .18s ease}.post:hover{background:#f7f9fb}.article{animation:gentle-enter .42s ease-out both}}
@@ -28,17 +28,11 @@
 <body>
   <div class="wrap">
     <div class="return"><a href="index.html">← AI Casterに戻る</a></div>
-    <header class="masthead">
-      <div class="eyebrow">中学生が書く、AIのこと。</div>
-      <div class="brand">AIばっか</div>
-      <p class="tagline">わからないことを調べて、自分の言葉で書いています。</p>
-    </header>
-    <main>
-      <div id="content" aria-live="polite"><div class="empty">記事を読み込んでいます…</div></div>
-      <section class="author" aria-labelledby="author-title">
-        <div><h2 id="author-title">運営者について</h2><p>中学生が運営しています。AIについて調べたことや、使ってみた感想を、自分の言葉で紹介します。</p></div>
-      </section>
-    </main>
+    <header class="masthead"><div class="brand">AIばっか</div></header>
+    <div class="page-grid">
+      <main id="content" aria-live="polite"><div class="empty">記事を読み込んでいます…</div></main>
+      <aside class="profile" aria-labelledby="profile-title"><h2 id="profile-title">プロフィール</h2><p>中学生が運営しています。AIについて調べたことや、使ってみた感想を、自分の言葉で紹介しています。</p></aside>
+    </div>
   </div>
   <footer><div class="wrap"><p>© <span id="year"></span> AIばっか</p></div></footer>
   <script>
@@ -54,11 +48,16 @@
           var p=posts.filter(function(x){return x.slug===slug})[0];
           if(!p){content.innerHTML='<h1 class="section-title">記事が見つかりません</h1><a class="back-list" href="blog.html">AIばっかの記事一覧へ戻る</a>';return}
           document.title=p.title+"｜AIばっか";
-          content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||"")+'</div><div class="article-footer"><a class="back-list" href="blog.html">← AIばっかの記事一覧へ戻る</a></div></article>'+commentsHTML(p.slug);
+          var others=posts.filter(function(x){return x.slug!==p.slug}).slice(0,3);
+          content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||"")+'</div><div class="article-footer"><a class="back-list" href="blog.html">← 記事一覧に戻る</a></div></article>'+commentsHTML(p.slug)+moreBlogsHTML(others);
           return;
         }
-        content.innerHTML='<section class="intro"><h1 class="section-title">AIのことを、調べて書いています。</h1><p>ニュースで気になったことや、AIを使ってみた感想を、自分の言葉でまとめています。</p></section><div class="write-post"><a href="https://github.com/Koudai-wh/aicaster/issues/new?template=blog-post.yml">ブログ記事を書く（運営者向け）</a><p>GitHubにログインして入力。運営者の投稿は送信後に公開されます。</p></div><section aria-label="記事一覧"><h2 class="section-title">記事一覧</h2><div class="posts">'+(posts.length?posts.map(function(p){return '<a class="post" href="blog.html?slug='+encodeURIComponent(p.slug)+'"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h2>'+esc(p.title)+'</h2><p class="excerpt">'+esc(p.excerpt||"")+'</p></a>'}).join(""):'<div class="empty">記事はまだありません。</div>')+'</div></section>';
+        content.innerHTML='<section aria-label="記事一覧"><h1 class="section-title">記事一覧</h1><div class="posts">'+(posts.length?posts.map(function(p){return '<a class="post" href="blog.html?slug='+encodeURIComponent(p.slug)+'"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h2>'+esc(p.title)+'</h2><p class="excerpt">'+esc(p.excerpt||"")+'</p></a>'}).join(""):'<div class="empty">記事はまだありません。</div>')+'</div></section>';
       }).catch(function(){content.innerHTML='<div class="empty">記事を読み込めませんでした。少し待ってから再読み込みしてください。</div>'});
+      function moreBlogsHTML(items){
+        if(!items.length)return '<section class="more-blogs"><h2>ほかの記事も見る</h2><p>公開中の記事はありません。</p></section>';
+        return '<section class="more-blogs" aria-label="ほかの記事"><h2>ほかの記事も見る</h2><ul>'+items.map(function(x){return '<li><a href="blog.html?slug='+encodeURIComponent(x.slug)+'">'+esc(x.title)+'</a>'+(x.excerpt?'<p>'+esc(x.excerpt)+'</p>':'')+'</li>'}).join("")+'</ul><a class="back-list" href="blog.html">記事一覧を見る</a></section>';
+      }
       function commentsHTML(slug){
         // Giscus の接続情報を設定すると、記事ごとのコメント欄に切り替わります。
         var config={repo:"Koudai-wh/aicaster",repoId:"R_kgDOVd8erQ",category:"Announcements",categoryId:"DIC_kwDOVd8erc4DKIUV"};
