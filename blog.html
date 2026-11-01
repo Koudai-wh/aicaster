@@ -18,7 +18,11 @@
     .comments{margin-top:48px;padding-top:28px;border-top:1px solid var(--line)}.comments h2{font-size:1.2rem;margin:0 0 8px}.comments-intro,.comments-pending{font-size:.88rem;color:var(--muted)}.comments-pending{background:var(--paper);border:1px dashed #cbd2d9;border-radius:12px;padding:16px;margin-top:16px}
     .empty{padding:24px;background:var(--paper);border:1px dashed var(--line);border-radius:12px;color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0 38px;color:var(--muted);font-size:.78rem}footer p{margin:0}
     @media(max-width:600px){.wrap{width:min(100% - 32px,860px)}.return{padding-top:16px}.masthead{padding:34px 0 24px}.tagline{font-size:.92rem}.post{padding:18px}.posts{gap:10px}main{padding-top:26px}.author{padding:18px;grid-template-columns:44px 1fr}.avatar{width:44px;height:44px}}
-  </style>
+
+    @keyframes gentle-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @media(prefers-reduced-motion:no-preference){.return,.masthead,main{animation:gentle-enter .42s ease-out both}.masthead{animation-delay:.05s}main{animation-delay:.1s}.post{transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}.post:hover{box-shadow:0 8px 24px rgba(32,33,36,.06)}.article{animation:gentle-enter .42s ease-out both}}
+    @media(prefers-reduced-motion:reduce){.return,.masthead,main,.article{animation:none!important}.post{transition:none!important}.post:hover,.article{transform:none;box-shadow:none}}
+</style>
 </head>
 <body>
   <div class="wrap">

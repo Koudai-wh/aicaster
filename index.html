@@ -161,6 +161,21 @@
   footer nav { margin-bottom: 8px; gap: 4px 20px; }
   footer nav a { padding: 0; font-size: .78rem; border: 0; }
   footer p { margin-top: 4px; }
+
+  @keyframes gentle-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .masthead { animation: gentle-enter .42s ease-out both; }
+    .navline { animation: gentle-enter .42s .06s ease-out both; }
+    .layout { animation: gentle-enter .46s .12s ease-out both; }
+    .article { transition: transform .18s ease, background-color .18s ease; }
+    .article:hover { transform: translateY(-2px); }
+    nav a, .more { transition: color .18s ease, background-color .18s ease, border-color .18s ease; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .masthead, .navline, .layout { animation: none !important; }
+    .article, nav a, .more { transition: none !important; }
+    .article:hover { transform: none; }
+  }
 </style>
 </head>
 <body>
