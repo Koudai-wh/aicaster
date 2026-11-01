@@ -57,7 +57,7 @@
       }).catch(function(){content.innerHTML='<div class="empty">記事を読み込めませんでした。少し待ってから再読み込みしてください。</div>'});
       function commentsHTML(slug){
         // Giscus の接続情報を設定すると、記事ごとのコメント欄に切り替わります。
-        var config={repo:"",repoId:"",category:"",categoryId:""};
+        var config={repo:"Koudai-wh/aicaster",repoId:"R_kgDOVd8erQ",category:"Announcements",categoryId:"DIC_kwDOVd8erc4DKIUV"};
         if(!config.repo||!config.repoId||!config.category||!config.categoryId){return '<section class="comments" aria-labelledby="comments-title"><h2 id="comments-title">コメント</h2><p class="comments-intro">この記事についての感想や質問をお待ちしています。</p><div class="comments-pending">コメント欄は準備中です。安全に管理できるコメント機能を設定しています。</div></section>'}
         return '<section class="comments" aria-labelledby="comments-title"><h2 id="comments-title">コメント</h2><p class="comments-intro">GitHubアカウントでログインしてコメントできます。投稿は公開され、GitHub Discussionsで管理されます。</p><div class="giscus"></div><script src="https://giscus.app/client.js" data-repo="'+esc(config.repo)+'" data-repo-id="'+esc(config.repoId)+'" data-category="'+esc(config.category)+'" data-category-id="'+esc(config.categoryId)+'" data-mapping="specific" data-term="'+esc(location.origin+location.pathname+"?slug="+slug)+'" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="ja" crossorigin="anonymous" async><\/script></section>';
       }
