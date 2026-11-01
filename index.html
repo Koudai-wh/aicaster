@@ -133,11 +133,8 @@
   aside h4 button { font-family: var(--sans); font-size: .72rem; color: var(--muted); }
   aside h4 button:hover { color: var(--accent); }
   .block { margin-bottom: 40px; }
-  .interest { margin-top: 14px; }
-  .bar-row { display: flex; justify-content: space-between; font-size: .75rem; font-weight: 700; margin-bottom: 4px; }
-  .bar-row .n { color: var(--muted); font-weight: 400; }
-  .bar { height: 4px; background: var(--line); margin-bottom: 14px; }
-  .bar i { display: block; height: 100%; background: var(--accent); }
+  .interest { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .interest-category { display: inline-flex; align-items: center; min-height: 30px; padding: 3px 9px; border: 1px solid var(--line); background: #fff; border-radius: 2px; font-size: .75rem; font-weight: 700; }
   .side-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
   .side-tags button { border: 1px solid var(--line); background: #fff; border-radius: 2px; font-size: .75rem; padding: 3px 9px; }
   .side-tags button:hover { border-color: var(--accent); color: var(--accent); }
@@ -399,10 +396,8 @@
       s += '<p class="side-empty">記事を読むと、関心のあるカテゴリやキーワードがここに表示されます。</p>';
     } else {
       var cats = Object.keys(p.cat).sort(function (a, b) { return p.cat[b] - p.cat[a]; }).slice(0, 4);
-      var max = p.cat[cats[0]];
       s += '<div class="interest">' + cats.map(function (c) {
-        var pct = Math.round(p.cat[c] / max * 100);
-        return '<div class="bar-row"><span style="color:' + (CAT_COLOR[c] || "#555") + '">◆ ' + esc(c) + '</span><span class="n">' + pct + '</span></div><div class="bar"><i style="width:' + pct + '%"></i></div>';
+        return '<span class="interest-category" style="color:' + (CAT_COLOR[c] || "#555") + '">◆ ' + esc(c) + '</span>';
       }).join("") + "</div>";
       var tags = Object.keys(p.tag).sort(function (a, b) { return p.tag[b] - p.tag[a]; }).slice(0, 8);
       if (tags.length) s += '<div class="side-tags">' + tags.map(function (t) { return '<button data-tag="' + esc(t) + '">#' + esc(t) + "</button>"; }).join("") + "</div>";
