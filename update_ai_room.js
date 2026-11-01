@@ -54,7 +54,7 @@ async function main() {
 
   const now = new Date();
   const hour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "2-digit", hourCycle: "h23" }).format(now));
-  const edition = hour < 12 ? "朝の部" : "夕方の部";
+  const edition = `${hour}時の部`;
   const facts = items.map((x, i) => `${i + 1}. ID=${x.id}\nカテゴリ=${x.category}\n見出し=${x.title}\n要約=${x.summary.join(" / ")}\n出典=${x.source}`).join("\n\n");
   const prompt = [
     "あなたは『AI Caster放課後会議』の構成作家です。ニュースを棒読みせず、3人の性格が見えるテンポのよい雑談番組を作ってください。今回の回は「" + edition + "」です。",

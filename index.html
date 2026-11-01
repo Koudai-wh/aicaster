@@ -270,8 +270,8 @@
   /* ---------- 描画パーツ ---------- */
   function articleHTML(i, reason) {
     var d = new Date(i.date), color = CAT_COLOR[i.category] || "#555";
-    var chars = (i.summary || []).join("").length;
-    var sec = Math.max(15, Math.round(chars / 8 / 5) * 5);
+    var chars = String(i.title || "").length + (i.summary || []).join("").length;
+    var sec = Math.max(15, Math.round(chars / 6.7 / 5) * 5);
     var nums = ["一", "二", "三"];
     return '<article class="article">' +
       '<div class="meta"><div class="cat" style="color:' + color + '">' + esc(i.category) + '</div>' +

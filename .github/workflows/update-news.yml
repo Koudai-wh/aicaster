@@ -29,17 +29,6 @@ jobs:
             exit 0
           fi
           node update_news.js
-      - name: Create daily AI meeting room
-        continue-on-error: true
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: gemini-3.5-flash-lite
-        run: |
-          if [ -z "$GEMINI_API_KEY" ]; then
-            echo "GEMINI_API_KEY is not set; skipping AI meeting room."
-            exit 0
-          fi
-          node update_ai_room.js
       - name: Commit generated content
         run: |
           git config user.name "news-bot"

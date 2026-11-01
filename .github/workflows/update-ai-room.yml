@@ -2,7 +2,7 @@ name: Update AI meeting room
 
 on:
   schedule:
-    - cron: "0 9 * * *" # 毎日18:00 JST。朝6:00 JSTのニュース更新後の会議と合わせて1日2回。
+    - cron: "17 * * * *" # 毎時17分（日本時間）。毎時ちょうどの混雑を避けて実行。
   workflow_dispatch:
 
 permissions:

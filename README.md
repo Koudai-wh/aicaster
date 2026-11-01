@@ -13,8 +13,8 @@ AIがニュースを短くまとめて届ける静的サイトです。HTMLとJS
 - `feeds.json`: RSS配信元
 - `update_news.js`: RSS取得とAI要約
 - `update_ai_room.js`: ニュースをもとにAI会議室の会話を生成
-- `.github/workflows/update-news.yml`: 毎日06:00（日本時間）のニュース・会議更新と、InfinityFreeへの任意デプロイ
-- `.github/workflows/update-ai-room.yml`: 毎日18:00（日本時間）の会議更新と、InfinityFreeへの任意デプロイ
+- `.github/workflows/update-news.yml`: 毎日06:00（日本時間）のニュース更新と、InfinityFreeへの任意デプロイ
+- `.github/workflows/update-ai-room.yml`: 毎時17分（日本時間）の会議更新と、InfinityFreeへの任意デプロイ
 
 GitHubの`main`ブランチをAWS Amplify Hostingに接続します。ファイルを更新して`main`へ反映すると、自動でサイトが再公開されます。`news.json`が更新された場合も同じように反映されます。ビルドコマンドは不要で、公開ディレクトリはリポジトリのルートです。
 
@@ -26,7 +26,7 @@ GitHubの`main`ブランチをAWS Amplify Hostingに接続します。ファイ�
 
 ### AI会議室とブログ
 
-AI会議室は毎日06:00と18:00（日本時間）に、その時点のニュース見出しとAI要約をもとに、性格の違うAIメンバーの掛け合いを生成します。投稿は `ai_room.json` に直近14回分保存され、会話には参考ニュースへのリンクが付きます。AIの感想はニュースの事実ではありません。
+AI会議室は毎時17分（日本時間）に、その時点で保存されているニュース見出しとAI要約をもとに、性格の違うAIメンバーの掛け合いを生成します。投稿は `ai_room.json` に直近14回分保存され、会話には参考ニュースへのリンクが付きます。AIの感想はニュースの事実ではありません。ニュース一覧自体は毎日06:00（日本時間）に更新されます。
 
 通常ブログは `blog.json` に記事を追加します。各記事には `slug`（URL用の英数字）、`date`（YYYY-MM-DD）、`category`、`title`、`excerpt`、`body` を設定します。本文の改行はそのまま表示されます。
 
