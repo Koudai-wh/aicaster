@@ -338,12 +338,12 @@
     }
     if (r.name === "blog") {
       var posts = state.blogs.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
-      return head("BLOG", "ブログ", "AI Casterからのお知らせや、ニュースの読み方などをお届けします。") + (posts.length ? posts.map(function (p) { return '<a class="blog-card" href="#/blog/' + encodeURIComponent(p.slug) + '"><div class="blog-meta">' + esc(p.date) + (p.category ? ' ・ ' + esc(p.category) : '') + '</div><h3 class="blog-title">' + esc(p.title) + '</h3><p class="blog-excerpt">' + esc(p.excerpt || "") + '</p></a>'; }).join("") : '<div class="notice-box">ブログ記事はまだありません。</div>');
+      return head("AI BLOG", "AIブログ", "生成AIやAIサービスの動きを、初心者にもわかりやすく紹介します。") + (posts.length ? posts.map(function (p) { return '<a class="blog-card" href="#/blog/' + encodeURIComponent(p.slug) + '"><div class="blog-meta">' + esc(p.date) + (p.category ? ' ・ ' + esc(p.category) : '') + '</div><h3 class="blog-title">' + esc(p.title) + '</h3><p class="blog-excerpt">' + esc(p.excerpt || "") + '</p></a>'; }).join("") + '<div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot"><!-- 忍者AdMaxの広告タグをここに設置 --><span class="ad-placeholder">広告枠（広告タグ設置後に表示）</span></div></div>' : '<div class="notice-box">AIブログ記事はまだありません。</div>');
     }
     if (r.name === "blogEntry") {
       var post = state.blogs.filter(function (p) { return p.slug === r.v; })[0];
-      if (!post) return head("BLOG", "記事が見つかりません") + '<a class="back-link" href="#/blog">ブログ一覧へ戻る</a>';
-      return '<article class="blog-article"><div class="blog-meta">' + esc(post.date) + (post.category ? ' ・ ' + esc(post.category) : '') + '</div><h2 class="page-title">' + esc(post.title) + '</h2><div class="blog-body">' + esc(post.body || "") + '</div><a class="back-link" href="#/blog">← ブログ一覧へ戻る</a></article>';
+      if (!post) return head("AI BLOG", "記事が見つかりません") + '<a class="back-link" href="#/blog">AIブログ一覧へ戻る</a>';
+      return '<article class="blog-article"><div class="blog-meta">' + esc(post.date) + (post.category ? ' ・ ' + esc(post.category) : '') + '</div><h2 class="page-title">' + esc(post.title) + '</h2><div class="blog-body">' + esc(post.body || "") + '</div><a class="back-link" href="#/blog">← AIブログ一覧へ戻る</a></article><div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot"><!-- 忍者AdMaxの広告タグをここに設置 --><span class="ad-placeholder">広告枠（広告タグ設置後に表示）</span></div></div>';
     }
     return "";
   }
@@ -383,7 +383,7 @@
   function renderNav(r) {
     var links = [{ h: "#/", t: "トップ", on: r.name === "top" }].concat(CATS.map(function (c) {
       return { h: "#/cat/" + encodeURIComponent(c), t: c, on: r.name === "cat" && r.v === c };
-    }), [{ h: "ai-room.html", t: "AI会議室", on: false }, { h: "blog.html", t: "ブログ", on: false }]);
+    }), [{ h: "ai-room.html", t: "AI会議室", on: false }, { h: "blog.html", t: "AIブログ", on: false }]);
     $("nav").innerHTML = links.map(function (l) { return '<a href="' + l.h + '"' + (l.on ? ' class="active"' : "") + ">" + esc(l.t) + "</a>"; }).join("");
   }
 
