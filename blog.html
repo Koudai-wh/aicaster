@@ -41,7 +41,6 @@
       var content=document.getElementById("content");
       var adMaxStarted=false;
       function loadAdMax(){if(adMaxStarted)return;adMaxStarted=true;var ad=document.createElement("script");ad.async=true;ad.src="https://adm.shinobi.jp/st/auto.js";ad.setAttribute("data-admax-id","7c18442ca9e9d3d7b802b7cdc351eb37");document.body.appendChild(ad)}
-      document.getElementById("year").textContent=new Date().getFullYear();
       fetch("blog.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("blog unavailable");return r.json()}).then(function(data){
         var posts=Array.isArray(data)?data:(data.posts||[]),slug=new URLSearchParams(location.search).get("slug");
         posts.sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
