@@ -298,16 +298,6 @@
       '<div class="src">出典:' + esc(i.source) + "</div>" +
       "</div></article>";
   }
-  var adMaxStarted = false;
-  function loadAdMax() {
-    if (adMaxStarted) return;
-    adMaxStarted = true;
-    var script = document.createElement("script");
-    script.async = true;
-    script.src = "https://adm.shinobi.jp/st/auto.js";
-    script.setAttribute("data-admax-id", "5f0948c4cb944468012d58c17daab4bc");
-    document.body.appendChild(script);
-  }
   function listHTML(rows) {
     var out = [];
     rows.slice(0, state.limit).forEach(function (r, idx) {
@@ -429,7 +419,6 @@
     renderNav(r);
     $("main").innerHTML = viewMain(r);
     renderSide();
-    loadAdMax();
     $("q").value = r.name === "search" ? r.v : $("q").value;
   }
 

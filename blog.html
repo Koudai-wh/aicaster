@@ -39,8 +39,6 @@
       "use strict";
       var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
       var content=document.getElementById("content");
-      var adMaxStarted=false;
-      function loadAdMax(){if(adMaxStarted)return;adMaxStarted=true;var ad=document.createElement("script");ad.async=true;ad.src="https://adm.shinobi.jp/st/auto.js";ad.setAttribute("data-admax-id","7c18442ca9e9d3d7b802b7cdc351eb37");document.body.appendChild(ad)}
       fetch("blog.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("blog unavailable");return r.json()}).then(function(data){
         var posts=Array.isArray(data)?data:(data.posts||[]),slug=new URLSearchParams(location.search).get("slug");
         posts.sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
@@ -50,11 +48,9 @@
           document.title=p.title+"｜ブログ";
           var others=posts.filter(function(x){return x.slug!==p.slug}).slice(0,3);
           content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||"")+'</div><div class="article-footer"><a class="back-list" href="blog.html">← 記事一覧に戻る</a></div></article>'+commentsHTML(p.slug)+moreBlogsHTML(others);
-          loadAdMax();
           return;
         }
         content.innerHTML='<section aria-label="記事一覧"><h1 class="section-title">記事一覧</h1><div class="posts">'+(posts.length?posts.map(function(p){return '<a class="post" href="blog.html?slug='+encodeURIComponent(p.slug)+'"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h2>'+esc(p.title)+'</h2><p class="excerpt">'+esc(p.excerpt||"")+'</p></a>'}).join(""):'<div class="empty">記事はまだありません。</div>')+'</div></section>';
-        loadAdMax();
       }).catch(function(){content.innerHTML='<div class="empty">記事を読み込めませんでした。少し待ってから再読み込みしてください。</div>'});
       function moreBlogsHTML(items){
         if(!items.length)return '<section class="more-blogs"><h2>ほかの記事も見る</h2><p>公開中の記事はありません。</p></section>';
