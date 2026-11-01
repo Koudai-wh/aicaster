@@ -338,12 +338,12 @@
     }
     if (r.name === "blog") {
       var posts = state.blogs.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
-      return head("AI BLOG", "AIブログ", "生成AIやAIサービスの動きを、初心者にもわかりやすく紹介します。") + (posts.length ? posts.map(function (p) { return '<a class="blog-card" href="#/blog/' + encodeURIComponent(p.slug) + '"><div class="blog-meta">' + esc(p.date) + (p.category ? ' ・ ' + esc(p.category) : '') + '</div><h3 class="blog-title">' + esc(p.title) + '</h3><p class="blog-excerpt">' + esc(p.excerpt || "") + '</p></a>'; }).join("") + '<div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-admax-slot></div></div>' : '<div class="notice-box">AIブログ記事はまだありません。</div>');
+      return head("AI BLOG", "AIブログ", "生成AIやAIサービスの動きを、初心者にもわかりやすく紹介します。") + (posts.length ? posts.map(function (p) { return '<a class="blog-card" href="#/blog/' + encodeURIComponent(p.slug) + '"><div class="blog-meta">' + esc(p.date) + (p.category ? ' ・ ' + esc(p.category) : '') + '</div><h3 class="blog-title">' + esc(p.title) + '</h3><p class="blog-excerpt">' + esc(p.excerpt || "") + '</p></a>'; }).join("") + '<div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-admax-slot data-admax-id="5f0948c4cb944468012d58c17daab4bc"></div></div>' : '<div class="notice-box">AIブログ記事はまだありません。</div>');
     }
     if (r.name === "blogEntry") {
       var post = state.blogs.filter(function (p) { return p.slug === r.v; })[0];
       if (!post) return head("AI BLOG", "記事が見つかりません") + '<a class="back-link" href="#/blog">AIブログ一覧へ戻る</a>';
-      return '<article class="blog-article"><div class="blog-meta">' + esc(post.date) + (post.category ? ' ・ ' + esc(post.category) : '') + '</div><h2 class="page-title">' + esc(post.title) + '</h2><div class="blog-body">' + esc(post.body || "") + '</div><a class="back-link" href="#/blog">← AIブログ一覧へ戻る</a></article><div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-admax-slot></div></div>';
+      return '<article class="blog-article"><div class="blog-meta">' + esc(post.date) + (post.category ? ' ・ ' + esc(post.category) : '') + '</div><h2 class="page-title">' + esc(post.title) + '</h2><div class="blog-body">' + esc(post.body || "") + '</div><a class="back-link" href="#/blog">← AIブログ一覧へ戻る</a></article><div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-admax-slot data-admax-id="5f0948c4cb944468012d58c17daab4bc"></div></div>';
     }
     return "";
   }
@@ -376,7 +376,7 @@
     s += hist.length ? '<ul class="hist">' + hist.slice(0, 5).map(histItem).join("") + "</ul>" : '<p class="side-empty">閲覧履歴はまだありません。</p>';
     s += "</div>";
 
-    s += '<div class="ad-label">広告</div><div class="ad-slot rect"><!-- ▼ここに忍者AdMaxの広告タグを貼り付け --><span class="ad-placeholder">広告枠</span></div>';
+    s += '<div class="ad-label">広告</div><div class="ad-slot rect" data-admax-slot data-admax-id="7c18442ca9e9d3d7b802b7cdc351eb37"></div>';
     return s;
   }
 
@@ -396,7 +396,7 @@
       var script = document.createElement("script");
       script.async = true;
       script.src = "https://adm.shinobi.jp/st/auto.js";
-      script.dataset.admaxId = "5f0948c4cb944468012d58c17daab4bc";
+      script.dataset.admaxId = slot.dataset.admaxId;
       slot.appendChild(script);
     });
   }
