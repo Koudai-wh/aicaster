@@ -1,0 +1,46 @@
+name: AIばっかの記事を投稿
+description: 運営者向けの記事投稿フォームです。送信後に記事が公開されます。
+title: "AIばっかの記事投稿"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        GitHubアカウントで投稿します。運営者アカウントから送信した記事は、すぐにAIばっかへ公開されます。記事を編集すると公開済みの記事も更新されます。
+  - type: input
+    id: article_title
+    attributes:
+      label: 記事タイトル
+      placeholder: 記事のタイトル
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: カテゴリ
+      options:
+        - はじめまして
+        - AIニュース
+        - AIの使い方
+        - AIと学校
+        - AIと暮らし
+        - その他
+    validations:
+      required: true
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: 一覧用の紹介文
+      description: 記事一覧に表示する短い紹介文です。
+      placeholder: この記事で伝えたいことを短く書いてください。
+    validations:
+      required: true
+      max_length: 300
+  - type: textarea
+    id: article_body
+    attributes:
+      label: 本文
+      description: 段落を分けて入力してください。
+      placeholder: ここに記事本文を書きます。
+    validations:
+      required: true
+      max_length: 12000

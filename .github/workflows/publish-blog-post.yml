@@ -1,0 +1,61 @@
+name: Publish AI blog post
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.event.issue.user.id == 350409943 && github.event.sender.id == 350409943
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Add or update blog post
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: node .github/scripts/publish_blog_issue.js
+      - name: Save post to GitHub
+        run: |
+          git config user.name "blog-publisher"
+          git config user.email "blog-publisher@users.noreply.github.com"
+          git add blog.json
+          git diff --cached --quiet || (git commit -m "Publish blog post from issue #${{ github.event.issue.number }}" && git push)
+      - name: Check InfinityFree deployment settings
+        id: ftp-config
+        env:
+          FTP_SERVER: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.INFINITYFREE_FTP_DIR }}
+        run: |
+          if [ -n "$FTP_SERVER" ] && [ -n "$FTP_USERNAME" ] && [ -n "$FTP_PASSWORD" ] && [ -n "$FTP_DIR" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "InfinityFree FTP settings are incomplete; the post is saved in GitHub but not published to the website."
+          fi
+      - name: Deploy static site to InfinityFree
+        if: ${{ steps.ftp-config.outputs.enabled == 'true' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          username: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          password: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          server-dir: ${{ secrets.INFINITYFREE_FTP_DIR }}
+          protocol: ftps
+          local-dir: ./
+          exclude: |
+            **/.git*/**
+            **/.github/**
+            README.md
+            feeds.json
+            update_news.js
+            update_ai_room.js
