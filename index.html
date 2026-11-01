@@ -59,7 +59,7 @@
   .article:first-of-type { border-top: 0; }
   .meta { font-size: .75rem; color: var(--muted); }
   .cat { font-weight: 700; font-size: .78rem; margin-bottom: 8px; }
-  .cat::before { content: "◆"; font-size: .6rem; margin-right: 4px; vertical-align: 1px; }
+  .cat::before { content: ""; display: inline-block; width: 3px; height: .85em; margin-right: 7px; background: var(--accent); vertical-align: -1px; }
   .meta .date { font-family: ui-monospace, "SF Mono", Menlo, monospace; line-height: 1.7; }
   .meta .read { margin-top: 6px; }
   .article h3 { font-family: var(--sans); font-size: 1.4rem; line-height: 1.5; font-weight: 700; }
@@ -70,7 +70,7 @@
   .three li { display: grid; grid-template-columns: 28px 1fr; font-size: .95rem; padding: 3px 0; }
   .three li::before { content: attr(data-n); font-family: var(--sans); color: var(--accent); }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .tags button { border: 1px solid var(--line); font-size: .7rem; color: var(--muted); padding: 1px 8px; }
+  .tags button { border: 1px solid var(--line); border-radius: 2px; font-size: .75rem; color: var(--muted); padding: 2px 8px; }
   .tags button:hover { border-color: var(--accent); color: var(--accent); }
   .src { font-size: .72rem; color: var(--muted); margin-top: 8px; }
   @media (max-width: 640px) {
@@ -98,7 +98,7 @@
     .article h3 { font-size: 1.12rem; line-height: 1.55; }
     .three li { grid-template-columns: 24px 1fr; font-size: .93rem; line-height: 1.75; }
     .tags button { min-height: 30px; }
-    .room-card, .blog-article { padding: 16px; }
+    .room-card, .blog-article { padding: 16px 0; }
     .room-line { grid-template-columns: 1fr; gap: 0; }
     aside { border-top: 1px solid var(--line); padding-top: 24px; }
     .ad-slot.rect { min-height: 220px; }
@@ -107,12 +107,12 @@
     footer p { line-height: 1.7; }
   }
 
-  .more { display: block; margin: 28px auto 0; padding: 10px 36px; border: 1px solid var(--line); border-radius: 8px; font-size: .85rem; }
+  .more { display: block; margin: 28px auto 0; padding: 10px 36px; border: 1px solid var(--line); border-radius: 2px; font-size: .9rem; }
   .more:hover { background: var(--text); color: #fff; }
   .notice-box { margin-top: 24px; padding: 18px; border: 1px dashed var(--line); color: var(--muted); font-size: .88rem; }
 
   /* AI会議室・ブログ */
-  .room-card, .blog-card, .blog-article { margin-top: 20px; padding: 22px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; }
+  .room-card, .blog-card, .blog-article { margin-top: 20px; padding: 20px 0; border: 0; border-top: 1px solid var(--line); background: var(--surface); border-radius: 0; }
   .room-date, .blog-meta { color: var(--muted); font-size: .78rem; }
   .room-title, .blog-title { font-family: var(--sans); font-weight: 700; font-size: 1.35rem; line-height: 1.5; margin: 5px 0 14px; }
   .room-talk { display: grid; gap: 12px; }
@@ -122,7 +122,7 @@
   .room-sources { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 12px; font-size: .78rem; color: var(--muted); }
   .room-sources a { color: var(--accent); }
   .blog-card { text-decoration: none; display: block; }
-  .blog-card:hover { border-color: var(--accent); }
+  .blog-card:hover { background: #f7f9fb; }
   .blog-title { margin-bottom: 6px; }
   .blog-excerpt { color: var(--muted); font-size: .88rem; }
   .blog-body { white-space: pre-line; line-height: 2; margin-top: 20px; }
@@ -139,7 +139,7 @@
   .bar { height: 4px; background: var(--line); margin-bottom: 14px; }
   .bar i { display: block; height: 100%; background: var(--accent); }
   .side-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-  .side-tags button { border: 1px solid var(--line); background: #fff; font-size: .72rem; padding: 2px 9px; }
+  .side-tags button { border: 1px solid var(--line); background: #fff; border-radius: 2px; font-size: .75rem; padding: 3px 9px; }
   .side-tags button:hover { border-color: var(--accent); color: var(--accent); }
   .side-empty { font-size: .82rem; color: var(--muted); margin-top: 14px; }
   .hist { list-style: none; }
@@ -162,6 +162,8 @@
   footer nav a { padding: 0; font-size: .78rem; border: 0; }
   footer p { margin-top: 4px; }
 
+  :focus-visible { outline: 3px solid #f0c000; outline-offset: 3px; }
+  .ad-slot { border-style: solid; color: var(--muted); }
   @keyframes gentle-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   @media (prefers-reduced-motion: no-preference) {
     .masthead { animation: gentle-enter .42s ease-out both; }
