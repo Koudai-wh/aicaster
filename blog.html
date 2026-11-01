@@ -12,7 +12,7 @@
     :focus-visible{outline:3px solid #f0c000;outline-offset:3px}
     .return{padding:22px 0 14px}.return a{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:.9rem;font-weight:650;text-decoration:none}.return a:hover{text-decoration:underline;text-underline-offset:4px}
     .masthead{padding:38px 0 28px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--blue);font-size:.78rem;font-weight:650;letter-spacing:.04em}.brand{margin:7px 0 8px;font-size:clamp(2.8rem,8vw,4.2rem);line-height:1.12;letter-spacing:-.04em;font-weight:760}.tagline{margin:0;color:var(--muted);font-size:1rem}
-    .page-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start;padding:34px 0 72px}.page-grid main{min-width:0}.sidebar{position:sticky;top:20px}.profile{background:#f7f9fb;border-left:4px solid var(--blue);padding:26px 22px;margin-bottom:24px}.profile h2{font-size:1.25rem;margin:0 0 12px}.profile p{margin:0;color:var(--ink);font-size:1rem;line-height:1.9}.ad-wrap{margin-top:24px;padding-top:12px;border-top:1px solid var(--line)}.ad-label{font-size:.75rem;color:var(--muted);margin-bottom:8px}.ad-slot{min-height:250px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:.85rem;text-align:center}.ad-slot span{padding:16px}main{padding:0}.section-title{font-size:1.2rem;line-height:1.5;margin:0 0 16px}.intro{margin-bottom:42px}.intro p{margin:0;color:var(--muted)}
+    .page-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;align-items:start;padding:34px 0 72px}.page-grid main{min-width:0}.sidebar{position:sticky;top:20px}.profile{background:#f7f9fb;border-left:4px solid var(--blue);padding:26px 22px;margin-bottom:24px}.profile h2{font-size:1.25rem;margin:0 0 12px}.profile p{margin:0;color:var(--ink);font-size:1rem;line-height:1.9}main{padding:0}.section-title{font-size:1.2rem;line-height:1.5;margin:0 0 16px}.intro{margin-bottom:42px}.intro p{margin:0;color:var(--muted)}
 .posts{display:grid;gap:0;border-top:1px solid var(--line)}.post{display:block;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:22px 8px;text-decoration:none;transition:background-color .18s ease,transform .18s ease}.post:hover{background:#f7f9fb;transform:none}.meta{font-size:.78rem;color:var(--muted)}.category{display:inline-block;margin-left:8px;color:var(--blue);font-size:.78rem;font-weight:650}h2{font-family:var(--sans);font-size:1.3rem;line-height:1.5;margin:8px 0}.excerpt{margin:0;color:var(--muted);font-size:.92rem}
     .article{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:20px 0 38px}.article h1{font-family:var(--sans);font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.45;letter-spacing:-.025em;margin:13px 0 0}.article .body{white-space:pre-line;line-height:2.15;font-size:1.02rem;margin-top:28px}.article-footer{border-top:1px solid var(--line);margin-top:34px;padding-top:18px}.back-list{color:var(--blue);text-decoration:none;font-weight:650}.back-list:hover{text-decoration:underline;text-underline-offset:4px}
     .author{margin-top:46px;padding:22px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}.author h2{font-size:1rem;margin:0 0 4px}.author p{margin:0;color:var(--muted);font-size:.88rem}
@@ -31,7 +31,7 @@
     <header class="masthead"><div class="brand">ブログ</div></header>
     <div class="page-grid">
       <main id="content" aria-live="polite"><div class="empty">記事を読み込んでいます…</div></main>
-      <aside class="sidebar"><section class="profile" aria-labelledby="profile-title"><h2 id="profile-title">プロフィール</h2><p>中学生が運営しています。AIについて調べたことや、使ってみた感想を、自分の言葉で紹介しています。</p></section><div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-ad-slot="blog-sidebar"><script async src="https://adm.shinobi.jp/st/auto.js" data-admax-id="5f0948c4cb944468012d58c17daab4bc"></script><noscript>広告</noscript></div></div></aside>
+      <aside class="sidebar"><section class="profile" aria-labelledby="profile-title"><h2 id="profile-title">プロフィール</h2><p>中学生が運営しています。AIについて調べたことや、使ってみた感想を、自分の言葉で紹介しています。</p></section></aside>
     </div>
   </div>
   <script>
@@ -39,6 +39,8 @@
       "use strict";
       var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
       var content=document.getElementById("content");
+      var adMaxStarted=false;
+      function loadAdMax(){if(adMaxStarted)return;adMaxStarted=true;var ad=document.createElement("script");ad.async=true;ad.src="https://adm.shinobi.jp/st/auto.js";ad.setAttribute("data-admax-id","7c18442ca9e9d3d7b802b7cdc351eb37");document.body.appendChild(ad)}
       document.getElementById("year").textContent=new Date().getFullYear();
       fetch("blog.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("blog unavailable");return r.json()}).then(function(data){
         var posts=Array.isArray(data)?data:(data.posts||[]),slug=new URLSearchParams(location.search).get("slug");
@@ -49,9 +51,11 @@
           document.title=p.title+"｜ブログ";
           var others=posts.filter(function(x){return x.slug!==p.slug}).slice(0,3);
           content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||"")+'</div><div class="article-footer"><a class="back-list" href="blog.html">← 記事一覧に戻る</a></div></article>'+commentsHTML(p.slug)+moreBlogsHTML(others);
+          loadAdMax();
           return;
         }
         content.innerHTML='<section aria-label="記事一覧"><h1 class="section-title">記事一覧</h1><div class="posts">'+(posts.length?posts.map(function(p){return '<a class="post" href="blog.html?slug='+encodeURIComponent(p.slug)+'"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h2>'+esc(p.title)+'</h2><p class="excerpt">'+esc(p.excerpt||"")+'</p></a>'}).join(""):'<div class="empty">記事はまだありません。</div>')+'</div></section>';
+        loadAdMax();
       }).catch(function(){content.innerHTML='<div class="empty">記事を読み込めませんでした。少し待ってから再読み込みしてください。</div>'});
       function moreBlogsHTML(items){
         if(!items.length)return '<section class="more-blogs"><h2>ほかの記事も見る</h2><p>公開中の記事はありません。</p></section>';
