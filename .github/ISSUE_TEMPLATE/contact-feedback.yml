@@ -1,0 +1,27 @@
+name: お問い合わせとフィードバック
+description: AI Casterへのご意見、誤りのご指摘、質問を送る
+title: "[お問い合わせ] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        送信内容はGitHub上で公開されます。個人情報や公開したくない内容は書かないでください。
+  - type: dropdown
+    id: type
+    attributes:
+      label: 内容
+      options:
+        - フィードバック
+        - 記事・要約の誤り
+        - 質問
+        - その他
+    validations:
+      required: true
+  - type: textarea
+    id: message
+    attributes:
+      label: お問い合わせ内容
+      description: 具体的なページや記事があれば、URLやタイトルも書いてください。
+      placeholder: こちらに内容を入力してください。
+    validations:
+      required: true
