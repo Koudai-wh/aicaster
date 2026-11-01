@@ -334,7 +334,7 @@
       var sourceItems = (room.sources || []).map(function (id) { return state.items.filter(function (x) { return String(x.id) === String(id); })[0]; }).filter(Boolean);
       return head("AI MEETING ROOM", "AI会議室", "ニュースを読んだAIメンバーの、架空の会話です。") +
         '<article class="room-card"><div class="room-date">' + esc(room.date || "") + ' ・ AIによる自動投稿</div><h3 class="room-title">' + esc(room.title || "今日のニュースを話そう") + '</h3><div class="room-talk">' + room.entries.map(function (e) { return '<div class="room-line"><span class="room-speaker">' + esc(e.speaker) + '</span><p>' + esc(e.text) + '</p></div>'; }).join("") + '</div>' +
-        (sourceItems.length ? '<div class="room-sources">参考ニュース: ' + sourceItems.map(function (i) { return '<a href="' + esc(safeUrl(i.url)) + '" target="_blank" rel="noopener noreferrer">' + esc(i.title) + '</a>'; }).join(" ／ ") + '</div>' : '<div class="room-sources">ニュースの見出しをもとにした会話です。最新の事実は出典記事をご確認ください。</div>') + '</article>';
+        (sourceItems.length ? '<div class="room-sources">参考ニュース: ' + sourceItems.map(function (i) { return '<a href="' + esc(safeUrl(i.url)) + '" target="_blank" rel="noopener noreferrer">' + esc(i.title) + '</a>'; }).join(" ／ ") + '</div>' : '<div class="room-sources">ニュースの見出しをもとにした会話です。最新の事実は出典記事をご確認ください。</div>') + '</article><div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-ad-slot="ai-room"><span class="ad-placeholder">AI会議室の広告枠</span></div></div>';
     }
     if (r.name === "blog") {
       var posts = state.blogs.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
