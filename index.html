@@ -74,14 +74,37 @@
   .tags button:hover { border-color: var(--accent); color: var(--accent); }
   .src { font-size: .72rem; color: var(--muted); margin-top: 8px; }
   @media (max-width: 640px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .topbar { align-items: flex-start; flex-direction: column; gap: 4px; padding: 9px 0; font-size: .72rem; }
+    .topbar .right { gap: 16px; flex-wrap: wrap; }
+    .masthead { align-items: stretch; gap: 16px; padding: 20px 0 16px; }
+    .brand { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .logo { font-size: 2.65rem; }
+    .tagline { margin: 0; font-size: .82rem; }
+    .search { width: 100%; }
+    .search input { min-height: 44px; }
+    .navline nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+    .navline nav a { display: grid; place-items: center; min-height: 42px; padding: 8px 3px; text-align: center; font-size: .8rem; letter-spacing: 0; }
+    .layout { padding: 24px 0 48px; gap: 28px; }
+    .page-title { font-size: 1.8rem; }
+    .page-sub { font-size: .9rem; }
+    .section-head { margin-top: 28px; }
     .article { grid-template-columns: 1fr; gap: 6px; }
+    .article { padding: 22px 0; }
     .meta { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
     .cat { margin-bottom: 0; }
     .meta .date { display: flex; gap: 6px; }
     .meta .read { margin-top: 0; }
-    .article h3 { font-size: 1.2rem; }
+    .article h3 { font-size: 1.12rem; line-height: 1.55; }
+    .three li { grid-template-columns: 24px 1fr; font-size: .93rem; line-height: 1.75; }
+    .tags button { min-height: 30px; }
     .room-card, .blog-article { padding: 16px; }
     .room-line { grid-template-columns: 1fr; gap: 0; }
+    aside { border-top: 1px solid var(--line); padding-top: 24px; }
+    .ad-slot.rect { min-height: 220px; }
+    footer { padding: 24px 0 36px; }
+    footer nav { gap: 12px 16px; }
+    footer p { line-height: 1.7; }
   }
 
   .more { display: block; margin: 28px auto 0; padding: 10px 36px; border: 1px solid var(--line); border-radius: 8px; font-size: .85rem; }
