@@ -10,16 +10,31 @@ const OUT_PATH = path.join(ROOT, "ai_room.json");
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const SPEAKERS = ["モモ", "ソラ", "レン"];
 
-async function callGemini(prompt) {
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`, {
-    method: "POST",
-    headers: { "content-type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY },
-    signal: AbortSignal.timeout(45000),
-    body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 900, responseMimeType: "application/json" },
-    }),
-  });
+async function callGemini(prompt, attempt = 0) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`;
+  let res;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY },
+      signal: AbortSignal.timeout(45000),
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 900, responseMimeType: "application/json" },
+      }),
+    });
+  } catch (error) {
+    if (attempt >= 3) throw error;
+    await new Promise((resolve) => setTimeout(resolve, 2000 * (2 ** attempt)));
+    return callGemini(prompt, attempt + 1);
+  }
+  if ((res.status === 429 || res.status >= 500) && attempt < 3) {
+    const retryAfter = Number(res.headers.get("retry-after"));
+    const delay = retryAfter > 0 ? Math.min(retryAfter * 1000, 30000) : 2000 * (2 ** attempt);
+    await res.body?.cancel();
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    return callGemini(prompt, attempt + 1);
+  }
   if (!res.ok) throw new Error("Gemini API " + res.status + " " + (await res.text()).slice(0, 200));
   const data = await res.json();
   const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("");
