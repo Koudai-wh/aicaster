@@ -3,37 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AIブログ — AI Caster</title>
-  <meta name="description" content="生成AIやAIサービスの動きを、わかりやすく紹介するAI Casterのブログです。">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>AIばっか｜AIのことを、気軽に。</title>
+  <meta name="description" content="AIのニュース、使い方、暮らしへの影響を気軽に読めるブログです。">
   <style>
-    :root{--bg:#fff;--surface:#fff;--text:#202124;--muted:#5f6368;--line:#dadce0;--accent:#1769aa;--accent-soft:#e8f1f8;--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
-    *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.8;-webkit-font-smoothing:antialiased}a{color:inherit}.wrap{max-width:1180px;margin:auto;padding:0 24px}
-    .top{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:.75rem;color:var(--muted)}.brandline{display:flex;align-items:end;justify-content:space-between;gap:24px;padding:26px 0 18px;flex-wrap:wrap}.brand{font:750 3rem/1 var(--sans);text-decoration:none}.tag{font:500 .85rem var(--sans);color:var(--muted);margin-left:12px}.nav{display:flex;flex-wrap:wrap;gap:2px 6px;border-bottom:1px solid var(--line)}.nav a{text-decoration:none;font-size:.9rem;padding:10px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}.nav a:hover,.nav a.active{color:var(--accent)}.nav a.active{font-weight:700;border-color:var(--accent);color:var(--accent)}
-    main{max-width:900px;padding:44px 24px 72px;margin:auto}.eyebrow{font-size:.72rem;letter-spacing:.25em;color:var(--muted)}h1{font:700 clamp(2rem,5vw,2.6rem)/1.3 var(--sans);margin:5px 0 8px}.intro{color:var(--muted);font-size:.9rem}.post{display:block;margin-top:20px;padding:22px;border:1px solid var(--line);background:var(--surface);border-radius:10px;text-decoration:none}.post:hover{border-color:var(--accent)}.meta{font-size:.78rem;color:var(--muted)}h2{font:700 1.4rem/1.5 var(--sans);margin:6px 0}.excerpt{color:var(--muted);font-size:.9rem}.article{margin-top:20px;padding:clamp(24px,5vw,48px);border:1px solid var(--line);background:var(--surface);border-radius:10px}.article h1{font-size:clamp(1.8rem,4vw,2.5rem);margin-top:10px}.body{white-space:pre-line;line-height:2.15;font-size:1.04rem;margin-top:28px}.back{display:inline-block;color:var(--accent);margin-top:32px}.notice{margin-top:24px;padding:18px;border:1px dashed var(--line);color:var(--muted);font-size:.9rem}.ad-wrap{margin:28px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.ad-label{font-size:.65rem;color:var(--muted);letter-spacing:.1em;margin-bottom:6px}.ad-slot{min-height:100px;display:grid;place-items:center;border:1px dashed var(--line);color:#9aa0a6;font-size:.75rem;overflow:hidden}.ad-slot.rect{min-height:250px}footer{border-top:1px solid var(--text);padding:28px 0 48px;font-size:.78rem;color:var(--muted)}footer p{margin-top:4px}footer a{margin-right:18px}
-    @media(max-width:640px){.wrap{padding-left:16px;padding-right:16px}.top{flex-direction:column;gap:4px;padding:9px 0;font-size:.72rem}.brandline{padding:20px 0 16px;gap:14px;align-items:stretch}.brand{font-size:2.3rem;display:flex;flex-direction:column;align-items:flex-start;gap:6px}.tag{display:block;margin:0;font-size:.82rem}.nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}.nav a{display:grid;place-items:center;min-height:42px;padding:8px 3px;text-align:center;font-size:.8rem;letter-spacing:0}main{padding:28px 16px 48px}.intro{font-size:.95rem;line-height:1.8}.post{padding:18px;margin-top:16px}h2{font-size:1.2rem}.article{padding:20px}.article .body{font-size:1rem;line-height:2}.ad-slot.rect{min-height:220px}footer{padding:24px 0 36px}footer p{line-height:1.7}}
+    :root{--bg:#f7f8fa;--paper:#fff;--ink:#202124;--muted:#60656d;--line:#e2e5e9;--blue:#1769aa;--blue-soft:#eaf3fb;--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.85;-webkit-font-smoothing:antialiased}a{color:inherit}.wrap{width:min(100% - 40px,860px);margin:auto}
+    .return{padding:22px 0 14px}.return a{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:.9rem;font-weight:650;text-decoration:none}.return a:hover{text-decoration:underline;text-underline-offset:4px}
+    .masthead{padding:46px 0 32px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--blue);font-size:.72rem;font-weight:750;letter-spacing:.16em}.brand{margin:5px 0 4px;font-size:clamp(3rem,10vw,5.2rem);line-height:1.08;letter-spacing:-.055em;font-weight:850}.tagline{margin:0;color:var(--muted);font-size:1rem}
+    main{padding:34px 0 72px}.section-title{font-size:1.2rem;line-height:1.5;margin:0 0 16px}.intro{margin-bottom:42px}.intro p{margin:0;color:var(--muted)}
+    .posts{display:grid;gap:14px}.post{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;text-decoration:none;transition:border-color .15s,transform .15s}.post:hover{border-color:#9bbbd4;transform:translateY(-1px)}.meta{font-size:.78rem;color:var(--muted)}.category{display:inline-block;margin-left:8px;padding:1px 9px;border-radius:999px;background:var(--blue-soft);color:#245b83;font-size:.72rem;font-weight:650}h2{font-size:1.3rem;line-height:1.5;margin:8px 0}.excerpt{margin:0;color:var(--muted);font-size:.92rem}
+    .article{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:clamp(24px,6vw,54px);}.article h1{font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.4;letter-spacing:-.025em;margin:13px 0 0}.article .body{white-space:pre-line;line-height:2.15;font-size:1.02rem;margin-top:28px}.article-footer{border-top:1px solid var(--line);margin-top:34px;padding-top:18px}.back-list{color:var(--blue);text-decoration:none;font-weight:650}.back-list:hover{text-decoration:underline;text-underline-offset:4px}
+    .author{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;margin-top:46px;padding:22px;background:#eef3f7;border-radius:14px}.avatar{width:52px;height:52px;display:grid;place-items:center;background:#d8e8f5;border-radius:50%;color:#245b83;font-size:1.25rem;font-weight:800}.author h2{font-size:1rem;margin:0 0 4px}.author p{margin:0;color:var(--muted);font-size:.88rem}
+    .comments{margin-top:48px;padding-top:28px;border-top:1px solid var(--line)}.comments h2{font-size:1.2rem;margin:0 0 8px}.comments-intro,.comments-pending{font-size:.88rem;color:var(--muted)}.comments-pending{background:var(--paper);border:1px dashed #cbd2d9;border-radius:12px;padding:16px;margin-top:16px}
+    .empty{padding:24px;background:var(--paper);border:1px dashed var(--line);border-radius:12px;color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0 38px;color:var(--muted);font-size:.78rem}footer p{margin:0}
+    @media(max-width:600px){.wrap{width:min(100% - 32px,860px)}.return{padding-top:16px}.masthead{padding:34px 0 24px}.tagline{font-size:.92rem}.post{padding:18px}.posts{gap:10px}main{padding-top:26px}.author{padding:18px;grid-template-columns:44px 1fr}.avatar{width:44px;height:44px}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="top"><span id="today"></span><span>AIの話題・コラム</span></div>
-    <header class="brandline"><a class="brand" href="index.html">AI Caster<span class="tag">むずかしいニュースを、三行で。</span></a></header>
-    <nav class="nav" aria-label="メインメニュー"><a href="index.html">トップ・ニュース</a><a href="ai-room.html">AI会議室</a><a class="active" href="blog.html">AIブログ</a></nav>
+    <div class="return"><a href="index.html">← AI Casterに戻る</a></div>
+    <header class="masthead">
+      <div class="eyebrow">AIの話を、もっと身近に。</div>
+      <div class="brand">AIばっか</div>
+      <p class="tagline">気になるAIのニュースや使い方を、わかりやすく。</p>
+    </header>
+    <main>
+      <div id="content" aria-live="polite"><div class="empty">記事を読み込んでいます…</div></div>
+      <section class="author" aria-labelledby="author-title">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div><h2 id="author-title">運営者について</h2><p>AIに興味がある個人が運営しています。新しいAIの話題や、実際に使って気づいたことを、初心者にも伝わる言葉で紹介していきます。</p></div>
+      </section>
+    </main>
   </div>
-  <main>
-    <div class="eyebrow">AI BLOG</div>
-    <div id="content" aria-live="polite"><div class="notice">ブログを読み込んでいます…</div></div>
-  </main>
-  <footer><div class="wrap"><p><a href="index.html">ニューストップ</a><a href="ai-room.html">AI会議室</a></p><p>© <span id="year"></span> AI Caster</p></div></footer>
+  <footer><div class="wrap"><p>© <span id="year"></span> AIばっか</p></div></footer>
   <script>
     (function(){
       "use strict";
       var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
-      document.getElementById("today").textContent=new Date().toLocaleDateString("ja-JP",{year:"numeric",month:"long",day:"numeric",weekday:"short"});
+      var content=document.getElementById("content");
       document.getElementById("year").textContent=new Date().getFullYear();
-      fetch("blog.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(data){var posts=Array.isArray(data)?data:(data.posts||[]),slug=new URLSearchParams(location.search).get("slug"),content=document.getElementById("content");
-        if(slug){var p=posts.filter(function(x){return x.slug===slug})[0];if(!p){content.innerHTML='<h1>記事が見つかりません</h1><a class="back" href="blog.html">AIブログ一覧へ戻る</a>';return}document.title=p.title+" — AI Caster";content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?' ・ '+esc(p.category):'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||'')+'</div><a class="back" href="blog.html">← AIブログ一覧へ戻る</a></article>';return}
-        posts.sort(function(a,b){return String(b.date).localeCompare(String(a.date))});content.innerHTML='<h1>AIブログ</h1><p class="intro">生成AIやAIサービスの動きを、初心者にもわかりやすく紹介します。</p>'+(posts.length?posts.map(function(p){return '<a class="post" href="blog.html?slug='+encodeURIComponent(p.slug)+'"><div class="meta">'+esc(p.date)+(p.category?' ・ '+esc(p.category):'')+'</div><h2>'+esc(p.title)+'</h2><p class="excerpt">'+esc(p.excerpt||'')+'</p></a>'}).join(''):'<div class="notice">AIブログ記事はまだありません。</div>');
-      }).catch(function(){document.getElementById("content").innerHTML='<h1>AIブログ</h1><div class="notice">ブログを読み込めませんでした。少し待ってから再読み込みしてください。</div>'});
+      fetch("blog.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("blog unavailable");return r.json()}).then(function(data){
+        var posts=Array.isArray(data)?data:(data.posts||[]),slug=new URLSearchParams(location.search).get("slug");
+        posts.sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
+        if(slug){
+          var p=posts.filter(function(x){return x.slug===slug})[0];
+          if(!p){content.innerHTML='<h1 class="section-title">記事が見つかりません</h1><a class="back-list" href="blog.html">AIばっかの記事一覧へ戻る</a>';return}
+          document.title=p.title+"｜AIばっか";
+          content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||"")+'</div><div class="article-footer"><a class="back-list" href="blog.html">← AIばっかの記事一覧へ戻る</a></div></article>'+commentsHTML(p.slug);
+          return;
+        }
+        content.innerHTML='<section class="intro"><h1 class="section-title">AIのこと、あれこれ。</h1><p>ニュースの背景や、AIを使ってみた感想を気軽に読めるブログです。</p></section><section aria-label="記事一覧"><h2 class="section-title">記事一覧</h2><div class="posts">'+(posts.length?posts.map(function(p){return '<a class="post" href="blog.html?slug='+encodeURIComponent(p.slug)+'"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h2>'+esc(p.title)+'</h2><p class="excerpt">'+esc(p.excerpt||"")+'</p></a>'}).join(""):'<div class="empty">記事はまだありません。</div>')+'</div></section>';
+      }).catch(function(){content.innerHTML='<div class="empty">記事を読み込めませんでした。少し待ってから再読み込みしてください。</div>'});
+      function commentsHTML(slug){
+        // Giscus の接続情報を設定すると、記事ごとのコメント欄に切り替わります。
+        var config={repo:"",repoId:"",category:"",categoryId:""};
+        if(!config.repo||!config.repoId||!config.category||!config.categoryId){return '<section class="comments" aria-labelledby="comments-title"><h2 id="comments-title">コメント</h2><p class="comments-intro">この記事についての感想や質問をお待ちしています。</p><div class="comments-pending">コメント欄は準備中です。安全に管理できるコメント機能を設定しています。</div></section>'}
+        return '<section class="comments" aria-labelledby="comments-title"><h2 id="comments-title">コメント</h2><p class="comments-intro">GitHubアカウントでログインしてコメントできます。投稿は公開され、GitHub Discussionsで管理されます。</p><div class="giscus"></div><script src="https://giscus.app/client.js" data-repo="'+esc(config.repo)+'" data-repo-id="'+esc(config.repoId)+'" data-category="'+esc(config.category)+'" data-category-id="'+esc(config.categoryId)+'" data-mapping="specific" data-term="'+esc(location.origin+location.pathname+"?slug="+slug)+'" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="ja" crossorigin="anonymous" async><\/script></section>';
+      }
     })();
   </script>
 </body>
