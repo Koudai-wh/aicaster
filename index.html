@@ -234,7 +234,7 @@
     { id: "sample-b", category: "テクノロジー", title: "【サンプル】新しいAIモデルが発表、処理速度が大幅に向上", summary: ["従来より高速に応答できる新モデルが発表された。", "長文の読み込みや要約の精度も改善されたとされる。", "企業向けが先行し、一般向けは順次開始予定。"], tags: ["AI", "半導体"], source: "サンプル", url: "https://example.com/", date: new Date(Date.now() - 3600e3).toISOString() }
   ];
 
-  var state = { items: [], updated: null, limit: PAGE, room: null, blogs: [] };
+  var state = { items: [], updated: null, limit: PAGE, room: null };
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var safeUrl = function (u) { return /^https?:\/\//i.test(u || "") ? u : "#"; };
@@ -326,8 +326,14 @@
     if (h === "/foryou") return { name: "foryou" };
     if (h === "/history") return { name: "history" };
     if (h === "/room") return { name: "room" };
-    if (h === "/blog") return { name: "blog" };
-    if ((m = h.match(/^\/blog\/([^/]+)$/))) return { name: "blogEntry", v: m[1] };
+    if (h === "/blog") {
+      location.replace("blog.html");
+      return { name: "top" };
+    }
+    if ((m = h.match(/^\/blog\/([^/]+)$/))) {
+      location.replace("blog.html?slug=" + encodeURIComponent(m[1]));
+      return { name: "top" };
+    }
     return { name: "top" };
   }
 
@@ -373,15 +379,6 @@
       return head("AI MEETING ROOM", "AI会議室", "ニュースを読んだAIメンバーの、架空の会話です。") +
         '<article class="room-card"><div class="room-date">' + esc(room.date || "") + ' ・ AIによる自動投稿</div><h3 class="room-title">' + esc(room.title || "今日のニュースを話そう") + '</h3><div class="room-talk">' + room.entries.map(function (e) { return '<div class="room-line"><span class="room-speaker">' + esc(e.speaker) + '</span><p>' + esc(e.text) + '</p></div>'; }).join("") + '</div>' +
         (sourceItems.length ? '<div class="room-sources">参考ニュース: ' + sourceItems.map(function (i) { return '<a href="' + esc(safeUrl(i.url)) + '" target="_blank" rel="noopener noreferrer">' + esc(i.title) + '</a>'; }).join(" ／ ") + '</div>' : '<div class="room-sources">ニュースの見出しをもとにした会話です。最新の事実は出典記事をご確認ください。</div>') + '</article><div class="ad-wrap"><div class="ad-label">広告</div><div class="ad-slot" data-ad-slot="ai-room"><span class="ad-placeholder">AI会議室の広告枠</span></div></div>';
-    }
-    if (r.name === "blog") {
-      var posts = state.blogs.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
-      return head("AI BLOG", "AIブログ", "生成AIやAIサービスの動きを、初心者にもわかりやすく紹介します。") + (posts.length ? posts.map(function (p) { return '<a class="blog-card" href="#/blog/' + encodeURIComponent(p.slug) + '"><div class="blog-meta">' + esc(p.date) + (p.category ? ' ・ ' + esc(p.category) : '') + '</div><h3 class="blog-title">' + esc(p.title) + '</h3><p class="blog-excerpt">' + esc(p.excerpt || "") + '</p></a>'; }).join("") : '<div class="notice-box">AIブログ記事はまだありません。</div>');
-    }
-    if (r.name === "blogEntry") {
-      var post = state.blogs.filter(function (p) { return p.slug === r.v; })[0];
-      if (!post) return head("AI BLOG", "記事が見つかりません") + '<a class="back-link" href="#/blog">AIブログ一覧へ戻る</a>';
-      return '<article class="blog-article"><div class="blog-meta">' + esc(post.date) + (post.category ? ' ・ ' + esc(post.category) : '') + '</div><h2 class="page-title">' + esc(post.title) + '</h2><div class="blog-body">' + esc(post.body || "") + '</div><a class="back-link" href="#/blog">← AIブログ一覧へ戻る</a></article>';
     }
     return "";
   }
@@ -465,8 +462,7 @@
 
   Promise.all([
     fetch("news.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return { items: FALLBACK }; }),
-    fetch("ai_room.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return null; }),
-    fetch("blog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return []; })
+    fetch("ai_room.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function () { return null; })
   ]).then(function (dataSets) {
       var data = dataSets[0];
       var items = Array.isArray(data) ? data : (data.items || []);
@@ -478,7 +474,6 @@
         if (!isNaN(u)) $("updated").textContent = "　最終更新 " + pad(u.getHours()) + ":" + pad(u.getMinutes());
       }
       state.room = dataSets[1];
-      state.blogs = Array.isArray(dataSets[2]) ? dataSets[2] : (dataSets[2].posts || []);
       render();
     });
 })();
