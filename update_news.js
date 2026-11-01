@@ -7,7 +7,7 @@
   3. news.json に書き出す(既存の要約は再利用するのでAPI費用を抑えられます)
 
   必要: Node.js 18以上 / 環境変数 GEMINI_API_KEY
-  任意: GEMINI_MODEL(既定 gemini-3.8-flash), MAX_NEW_PER_RUN(既定 20),
+  任意: GEMINI_MODEL(既定 gemini-3.5-flash-lite), MAX_NEW_PER_RUN(既定 20),
         MAX_KEEP(既定 200), KEEP_DAYS(既定 7)
 */
 const fs = require("fs");
@@ -17,7 +17,7 @@ const crypto = require("crypto");
 const ROOT = __dirname;
 const FEEDS_PATH = path.join(ROOT, "feeds.json");
 const OUT_PATH = path.join(ROOT, "news.json");
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const MAX_NEW = Number(process.env.MAX_NEW_PER_RUN || 20);
 const MAX_KEEP = Number(process.env.MAX_KEEP || 200);
 const KEEP_DAYS = Number(process.env.KEEP_DAYS || 7);

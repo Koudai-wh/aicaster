@@ -7,7 +7,7 @@ const path = require("path");
 const ROOT = __dirname;
 const NEWS_PATH = path.join(ROOT, "news.json");
 const OUT_PATH = path.join(ROOT, "ai_room.json");
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const SPEAKERS = ["モモ", "ソラ", "レン"];
 
 async function callGemini(prompt) {
