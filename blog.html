@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <title>AIばっかの生活｜AIについて書くブログ</title>
+  <title>AIばっかの生活です｜AIについて書くブログ</title>
   <meta name="description" content="AIのニュース、使い方、暮らしへの影響を気軽に読めるブログです。">
   <style>
     :root{--bg:#ffffff;--paper:#ffffff;--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#1769aa;--blue-soft:#e8f1f8;--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
@@ -28,13 +28,13 @@
 <body>
   <div class="wrap">
     <div class="return"><a href="index.html">← AI Casterに戻る</a></div>
-    <header class="masthead"><div class="brand">AIばっかの生活</div></header>
+    <header class="masthead"><div class="brand">AIばっかの生活です</div></header>
     <div class="page-grid">
       <main id="content" aria-live="polite"><div class="empty">記事を読み込んでいます…</div></main>
       <aside class="profile" aria-labelledby="profile-title"><h2 id="profile-title">プロフィール</h2><p>中学生が運営しています。AIについて調べたことや、使ってみた感想を、自分の言葉で紹介しています。</p></aside>
     </div>
   </div>
-  <footer><div class="wrap"><p>© <span id="year"></span> AIばっかの生活</p></div></footer>
+  <footer><div class="wrap"><p>© <span id="year"></span> AIばっかの生活です</p></div></footer>
   <script>
     (function(){
       "use strict";
@@ -46,8 +46,8 @@
         posts.sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
         if(slug){
           var p=posts.filter(function(x){return x.slug===slug})[0];
-          if(!p){content.innerHTML='<h1 class="section-title">記事が見つかりません</h1><a class="back-list" href="blog.html">AIばっかの生活の記事一覧へ戻る</a>';return}
-          document.title=p.title+"｜AIばっかの生活";
+          if(!p){content.innerHTML='<h1 class="section-title">記事が見つかりません</h1><a class="back-list" href="blog.html">AIばっかの生活ですの記事一覧へ戻る</a>';return}
+          document.title=p.title+"｜AIばっかの生活です";
           var others=posts.filter(function(x){return x.slug!==p.slug}).slice(0,3);
           content.innerHTML='<article class="article"><div class="meta">'+esc(p.date)+(p.category?'<span class="category">'+esc(p.category)+'</span>':'')+'</div><h1>'+esc(p.title)+'</h1><div class="body">'+esc(p.body||"")+'</div><div class="article-footer"><a class="back-list" href="blog.html">← 記事一覧に戻る</a></div></article>'+commentsHTML(p.slug)+moreBlogsHTML(others);
           return;
