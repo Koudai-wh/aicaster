@@ -1,0 +1,65 @@
+name: Update AI meeting room
+
+on:
+  schedule:
+    - cron: "0 9 * * *" # 毎日18:00 JST。朝6:00 JSTのニュース更新後の会議と合わせて1日2回。
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ai-room-publishing
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Create AI meeting room
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-3.5-flash-lite
+        run: node update_ai_room.js
+      - name: Commit generated meeting
+        run: |
+          git config user.name "news-bot"
+          git config user.email "news-bot@users.noreply.github.com"
+          git add ai_room.json
+          git diff --cached --quiet || (git commit -m "Publish AI meeting room" && git push)
+      - name: Check InfinityFree deployment settings
+        id: ftp-config
+        env:
+          FTP_SERVER: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.INFINITYFREE_FTP_DIR }}
+        run: |
+          if [ -n "$FTP_SERVER" ] && [ -n "$FTP_USERNAME" ] && [ -n "$FTP_PASSWORD" ] && [ -n "$FTP_DIR" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "InfinityFree FTP settings are incomplete; skipping deployment."
+          fi
+      - name: Deploy static site to InfinityFree
+        if: ${{ steps.ftp-config.outputs.enabled == 'true' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.INFINITYFREE_FTP_SERVER }}
+          username: ${{ secrets.INFINITYFREE_FTP_USERNAME }}
+          password: ${{ secrets.INFINITYFREE_FTP_PASSWORD }}
+          server-dir: ${{ secrets.INFINITYFREE_FTP_DIR }}
+          protocol: ftps
+          local-dir: ./
+          exclude: |
+            **/.git*/**
+            **/.github/**
+            README.md
+            feeds.json
+            update_news.js
+            update_ai_room.js
