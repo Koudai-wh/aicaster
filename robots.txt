@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ai-caster.gt.tc/sitemap.xml
+Sitemap: https://aicaster.pages.dev/sitemap.xml

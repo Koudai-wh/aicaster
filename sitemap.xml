@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ai-caster.gt.tc/</loc>
+    <loc>https://aicaster.pages.dev/</loc>
   </url>
   <url>
-    <loc>https://ai-caster.gt.tc/ai-room.html</loc>
+    <loc>https://aicaster.pages.dev/ai-room</loc>
   </url>
   <url>
-    <loc>https://ai-caster.gt.tc/blog.html</loc>
+    <loc>https://aicaster.pages.dev/blog</loc>
   </url>
   <url>
-    <loc>https://ai-caster.gt.tc/blog.html?slug=hello-aicaster</loc>
+    <loc>https://aicaster.pages.dev/blog?slug=hello-aicaster</loc>
   </url>
+  <url>
+    <loc>https://aicaster.pages.dev/blog?slug=how-to-read-ai-news</loc>
+  </url>
+  <url><loc>https://aicaster.pages.dev/about</loc></url>
+  <url><loc>https://aicaster.pages.dev/contact</loc></url>
+  <url><loc>https://aicaster.pages.dev/privacy</loc></url>
+  <url><loc>https://aicaster.pages.dev/disclaimer</loc></url>
 </urlset>
