@@ -18,7 +18,6 @@ body:
     attributes:
       label: カテゴリ
       options:
-        - はじめまして
         - AIニュース
         - AIの使い方
         - AIと学校
