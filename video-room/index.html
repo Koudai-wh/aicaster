@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI会議室（動画用）</title>
+<style>
+  :root{--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#1c2530;font-family:var(--sans);overflow:hidden}
+  /* 縦長 9:16 の舞台。画面にぴったり収まる大きさで中央に置く */
+  #stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    height:min(100vh,calc(100vw*16/9));aspect-ratio:9/16;background:#fbefd9;overflow:hidden}
+  canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .title{position:absolute;left:5%;right:5%;top:3.2%;text-align:center;color:#3a3226;
+    font-weight:800;font-size:calc(var(--u)*3.4);line-height:1.35}
+  .brand{position:absolute;left:0;right:0;bottom:2.2%;text-align:center;color:#7a6a52;
+    font-weight:700;font-size:calc(var(--u)*2.6);letter-spacing:.08em}
+  .bubble{position:absolute;left:6%;right:6%;top:12%;min-height:17%;padding:calc(var(--u)*3.2) calc(var(--u)*3.6);
+    background:#fff;border:calc(var(--u)*.7) solid var(--c,#3a3226);border-radius:calc(var(--u)*4);
+    box-shadow:0 calc(var(--u)*1) 0 rgba(0,0,0,.12);color:#2b251c;
+    font-weight:700;font-size:calc(var(--u)*4.1);line-height:1.55;opacity:0;transform:translateY(6px);
+    transition:opacity .2s,transform .2s}
+  .bubble.on{opacity:1;transform:none}
+  .bubble:after{content:"";position:absolute;bottom:calc(var(--u)*-3.2);left:var(--tail,50%);width:0;height:0;
+    border:calc(var(--u)*2) solid transparent;border-top:calc(var(--u)*3) solid var(--c,#3a3226);transform:translateX(-50%)}
+  .name{display:inline-block;margin-bottom:calc(var(--u)*1.2);padding:0 calc(var(--u)*2.2);border-radius:99px;
+    background:var(--c,#3a3226);color:#fff;font-size:calc(var(--u)*3);line-height:1.7}
+  #start{position:absolute;inset:0;display:grid;place-items:center;background:rgba(251,239,217,.82);
+    color:#3a3226;font-weight:800;font-size:calc(var(--u)*4);text-align:center;cursor:pointer;line-height:1.7}
+  #start small{display:block;font-weight:600;font-size:calc(var(--u)*2.6);color:#7a6a52}
+  #start.hide{display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div class="title" id="title"></div>
+  <div class="bubble" id="bubble"><span class="name" id="name"></span><div id="text"></div></div>
+  <div class="brand">AI Caster</div>
+  <div id="start">タップして<br>はじめる<small>（録画はこのあとスタート）</small></div>
+</div>
+
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script type="module">
+import * as THREE from "three";
+
+const stage = document.getElementById("stage");
+const canvas = document.getElementById("c");
+const bubble = document.getElementById("bubble");
+const nameEl = document.getElementById("name");
+const textEl = document.getElementById("text");
+
+/* 文字の大きさの基準（舞台の幅の1%） */
+function setUnit(){ stage.style.setProperty("--u", (stage.clientWidth/100)+"px"); }
+
+/* ---------- キャラクター（オリジナルの丸いゆるキャラ） ---------- */
+const CAST = {
+  "レン": { color: 0x5b9bd5, css: "#3f7fbf", x: -1.75, ears: "round" },
+  "モモ": { color: 0xf29ab6, css: "#d9668a", x:  0.00, ears: "cat"   },
+  "ソラ": { color: 0x8fcf7a, css: "#5aa645", x:  1.75, ears: "sprout"}
+};
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.shadowMap.enabled = true;
+renderer.setClearColor(0xfbefd9);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(48, 9/16, 0.1, 100);
+camera.position.set(0, 3.4, 11.5);
+camera.lookAt(0, 3.05, 0);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0xe8d3b0, 1.25));
+const sun = new THREE.DirectionalLight(0xffffff, 1.5);
+sun.position.set(3, 7, 6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left:-6, right:6, top:6, bottom:-6 });
+scene.add(sun);
+
+/* 床・かべ */
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 20), new THREE.MeshStandardMaterial({ color: 0xf0dcb4 }));
+floor.rotation.x = -Math.PI/2; floor.receiveShadow = true; scene.add(floor);
+const wall = new THREE.Mesh(new THREE.PlaneGeometry(30, 12), new THREE.MeshStandardMaterial({ color: 0xfff9ee }));
+wall.position.set(0, 6, -3.2); scene.add(wall);
+
+/* 長テーブル（画面の外までのびる） */
+const wood = new THREE.MeshStandardMaterial({ color: 0xc98f55, roughness: .8 });
+const table = new THREE.Mesh(new THREE.BoxGeometry(14, .22, 2.0), wood);
+table.position.set(0, 1.0, 1.0); table.castShadow = table.receiveShadow = true; scene.add(table);
+for (const lx of [-3.2, 3.2]) {
+  const leg = new THREE.Mesh(new THREE.BoxGeometry(.25, 1.0, 1.7), wood);
+  leg.position.set(lx, .5, 1.0); leg.castShadow = true; scene.add(leg);
+}
+
+/* ゆるキャラを1体作る */
+function makeMascot(def){
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color: def.color, roughness: .55 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x2b251c, roughness: .4 });
+  const white = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const blush = new THREE.MeshStandardMaterial({ color: 0xff9aa2, roughness: .9 });
+
+  const body = new THREE.Mesh(new THREE.SphereGeometry(.78, 40, 32), mat);
+  body.scale.set(1, 1.05, .95); body.position.y = .55; body.castShadow = true; g.add(body);
+
+  const head = new THREE.Group(); head.position.y = 1.55; g.add(head);
+  const skull = new THREE.Mesh(new THREE.SphereGeometry(.7, 40, 32), mat);
+  skull.scale.set(1.08, .95, 1); skull.castShadow = true; head.add(skull);
+
+  /* 耳・かざり */
+  if (def.ears === "round") {
+    for (const s of [-1, 1]) { const e = new THREE.Mesh(new THREE.SphereGeometry(.24, 24, 20), mat); e.position.set(s*.52, .55, 0); head.add(e); }
+  } else if (def.ears === "cat") {
+    for (const s of [-1, 1]) { const e = new THREE.Mesh(new THREE.ConeGeometry(.26, .48, 4), mat); e.position.set(s*.46, .62, 0); e.rotation.z = -s*.3; e.rotation.y = Math.PI/4; head.add(e); }
+  } else {
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(.04, .05, .3, 8), new THREE.MeshStandardMaterial({ color: 0x4f9b3c }));
+    stem.position.set(0, .78, 0); head.add(stem);
+    for (const s of [-1, 1]) { const l = new THREE.Mesh(new THREE.SphereGeometry(.2, 20, 16), new THREE.MeshStandardMaterial({ color: 0x6cc055 })); l.scale.set(1.3, .5, .8); l.position.set(s*.2, .98, 0); l.rotation.z = s*.45; head.add(l); }
+  }
+
+  /* 顔 */
+  const eyes = [];
+  for (const s of [-1, 1]) {
+    const eyeW = new THREE.Mesh(new THREE.SphereGeometry(.14, 24, 20), white); eyeW.position.set(s*.27, .1, .62); eyeW.scale.set(1, 1.15, .5); head.add(eyeW);
+    const pupil = new THREE.Mesh(new THREE.SphereGeometry(.085, 20, 16), dark); pupil.position.set(s*.27, .09, .68); pupil.scale.set(1,1,.6); head.add(pupil);
+    eyes.push(eyeW, pupil);
+    const cheek = new THREE.Mesh(new THREE.SphereGeometry(.12, 20, 16), blush); cheek.position.set(s*.46, -.13, .56); cheek.scale.set(1.2, .7, .4); head.add(cheek);
+  }
+  const mouth = new THREE.Mesh(new THREE.SphereGeometry(.1, 24, 16), dark);
+  mouth.position.set(0, -.12, .68); mouth.scale.set(1.3, .35, .5); head.add(mouth);
+
+  /* 手（テーブルの上にちょこん） */
+  for (const s of [-1, 1]) { const h = new THREE.Mesh(new THREE.SphereGeometry(.17, 20, 16), mat); h.position.set(s*.62, .32, .72); h.castShadow = true; g.add(h); }
+
+  g.position.set(def.x, 0.62, -0.1);
+  scene.add(g);
+  return { g, head, mouth, baseY: g.position.y, phase: Math.random()*6 };
+}
+const BASE = 0.84;
+const mascots = {};
+for (const [n, d] of Object.entries(CAST)) mascots[n] = makeMascot(d);
+
+/* ---------- 会話データ（今のAI会議室をそのまま使う） ---------- */
+let entries = [];
+let titleText = "";
+const params = new URLSearchParams(location.search);
+
+async function load(){
+  const r = await fetch("../ai_room.json", { cache: "no-store" });
+  const d = await r.json();
+  entries = (d.entries || []).filter(e => e && e.text);
+  titleText = d.title || "AI会議室";
+  document.getElementById("title").textContent = titleText;
+}
+
+/* ---------- 再生 ---------- */
+let idx = -1, speaker = null, lineStart = 0, lineLen = 0, playing = false, finished = false;
+const secFor = t => Math.max(3.0, t.length * 0.2);   // 声をつけるときは音声の長さに合わせて調整
+
+function showLine(i){
+  const e = entries[i]; if (!e) return;
+  const def = CAST[e.speaker] || { css: "#3a3226", x: 0 };
+  idx = i; speaker = e.speaker;
+  nameEl.textContent = e.speaker;
+  textEl.textContent = e.text;
+  bubble.style.setProperty("--c", def.css);
+  /* しっぽを話している子の方へ */
+  bubble.style.setProperty("--tail", (50 + (def.x || 0) * 18) + "%");
+  bubble.classList.add("on");
+  lineStart = performance.now() / 1000; lineLen = secFor(e.text);
+}
+function endAll(){
+  finished = true; speaker = null; bubble.classList.remove("on");
+  if (params.get("loop") !== "0") setTimeout(() => { finished = false; showLine(0); }, 2500);
+}
+
+document.getElementById("start").addEventListener("click", () => {
+  document.getElementById("start").classList.add("hide");
+  playing = true; showLine(Math.max(0, Math.min(entries.length - 1, Number(params.get("i")) || 0)));
+});
+
+/* ---------- 描画ループ ---------- */
+function resize(){
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); setUnit();
+}
+new ResizeObserver(resize).observe(stage); resize();
+
+function tick(){
+  const t = performance.now() / 1000;
+  for (const [n, m] of Object.entries(mascots)) {
+    const talking = playing && !finished && n === speaker;
+    const bob = Math.sin(t * 2 + m.phase) * .02;
+    m.g.position.y = m.baseY + bob + (talking ? Math.abs(Math.sin(t * 7)) * .07 : 0);
+    m.head.rotation.z = talking ? Math.sin(t * 4) * .06 : Math.sin(t * 1.2 + m.phase) * .02;
+    m.mouth.scale.y = talking ? .35 + Math.abs(Math.sin(t * 12)) * .75 : .3;
+    m.g.scale.setScalar(BASE * (talking ? 1.07 : 1));
+  }
+  if (playing && !finished && t - lineStart > lineLen) {
+    idx + 1 < entries.length ? showLine(idx + 1) : endAll();
+  }
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+
+load().then(() => {
+  if (params.get("auto") === "1") document.getElementById("start").click();   // 動作確認用
+  tick();
+}).catch(() => { document.getElementById("start").textContent = "会話データを読み込めませんでした"; });
+</script>
+</body>
+</html>
