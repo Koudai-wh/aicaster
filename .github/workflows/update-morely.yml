@@ -1,6 +1,11 @@
 name: Update Morely
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "generate_morely.js"
+      - ".github/workflows/update-morely.yml"
   schedule:
     - cron: "0 21 * * 0" # 毎週月曜06:00 JST
   workflow_dispatch:
