@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://aicaster.pages.dev/</loc>
-  </url>
-  <url>
-    <loc>https://aicaster.pages.dev/ai-room</loc>
-  </url>
-  <url>
-    <loc>https://aicaster.pages.dev/blog</loc>
-  </url>
-  <url>
-    <loc>https://aicaster.pages.dev/blog?slug=hello-aicaster</loc>
-  </url>
-  <url>
-    <loc>https://aicaster.pages.dev/blog?slug=how-to-read-ai-news</loc>
-  </url>
-  <url><loc>https://aicaster.pages.dev/about</loc></url>
-  <url><loc>https://aicaster.pages.dev/contact</loc></url>
-  <url><loc>https://aicaster.pages.dev/privacy</loc></url>
-  <url><loc>https://aicaster.pages.dev/disclaimer</loc></url>
+  <url><loc>https://aicaster.pages.dev/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/japan-cpi-oct-2026-reading-guide/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/iwamizawa-outsourcing-malware-2026/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/ai-agent-permissions-owasp/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/meti-ai-business-guideline-v12/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/ai-data-centres-electricity-iea-2026/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/japan-ai-copyright-what-guidance-says/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/fact-checking-ai-news-summaries/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/google-noindex-static-spa-pages/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/google-adsense-original-content-ai/</loc></url>
+  <url><loc>https://aicaster.pages.dev/morely/image-licensing-for-news-articles/</loc></url>
+  <url><loc>https://aicaster.pages.dev/about.html</loc></url>
+  <url><loc>https://aicaster.pages.dev/contact.html</loc></url>
+  <url><loc>https://aicaster.pages.dev/privacy.html</loc></url>
+  <url><loc>https://aicaster.pages.dev/disclaimer.html</loc></url>
 </urlset>

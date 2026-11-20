@@ -22,11 +22,13 @@ jobs:
         env:
           GITHUB_EVENT_PATH: ${{ github.event_path }}
         run: node .github/scripts/publish_blog_issue.js
+      - name: Build static Morely pages and sitemap
+        run: node build_morely.js
       - name: Save post to GitHub
         run: |
           git config user.name "blog-publisher"
           git config user.email "blog-publisher@users.noreply.github.com"
-          git add blog.json
+          git add blog.json sitemap.xml index.html news.html morely/
           git diff --cached --quiet || (git commit -m "Publish blog post from issue #${{ github.event.issue.number }}" && git push)
       - name: Check InfinityFree deployment settings
         id: ftp-config

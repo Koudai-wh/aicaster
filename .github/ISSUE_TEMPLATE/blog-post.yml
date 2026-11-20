@@ -1,11 +1,17 @@
-name: AIばっかの記事を投稿
+name: Morely記事を投稿
 description: 運営者向けの記事投稿フォームです。送信後に記事が公開されます。
-title: "AIばっかの記事投稿"
+title: "Morely記事投稿"
 body:
   - type: markdown
     attributes:
       value: |
-        GitHubアカウントで投稿します。運営者アカウントから送信した記事は、すぐにAIばっかへ公開されます。記事を編集すると公開済みの記事も更新されます。
+        GitHubアカウントで投稿します。運営者アカウントから送信した記事はサイトに公開されます。検索対象にするMorely記事は、本文を1,500〜2,500文字程度にし、下記5つの見出しをすべて含め、参照資料を2件以上挙げてください。未実施の検証や体験を一人称で書かないでください。
+        ## はじめに
+        ## 背景
+        ## 仕組みの解説
+        ## 検証・考察
+        ## 今後の展望とまとめ
+        条件を満たさない投稿もサイトでは読めますが、自動でnoindexになります。画像の利用許諾と出典を必ず確認してください。
   - type: input
     id: article_title
     attributes:
@@ -18,10 +24,8 @@ body:
     attributes:
       label: カテゴリ
       options:
-        - AIニュース
-        - AIの使い方
-        - AIと学校
-        - AIと暮らし
+        - AI・テック
+        - 経済・社会
         - その他
     validations:
       required: true
@@ -35,11 +39,58 @@ body:
       required: true
       max_length: 300
   - type: textarea
+    id: sources
+    attributes:
+      label: 出典資料（2件以上）
+      description: 1行に「資料名 | https://...」の形で入力してください。可能なら一次資料を含めてください。
+      placeholder: |
+        発表元の資料 | https://example.com/primary-source
+        公的機関の解説 | https://example.com/guide
+    validations:
+      required: true
+      max_length: 3000
+  - type: input
+    id: image_url
+    attributes:
+      label: アイキャッチ画像URL（任意）
+      description: HTTPSの画像URLか、サイト内の / から始まる画像パスを指定してください。
+  - type: input
+    id: image_alt
+    attributes:
+      label: 画像の代替テキスト（任意）
+      description: 画像が表示されない場合に伝える内容を書いてください。
+      placeholder: 画像が何を示しているか
+  - type: input
+    id: image_caption
+    attributes:
+      label: 画像の説明（任意）
+      placeholder: 図の内容や撮影者など
+  - type: input
+    id: image_source_url
+    attributes:
+      label: 画像の出典・ライセンスURL（任意）
+      description: 利用許諾を確認できるページを入力してください。
+      placeholder: https://example.com/license
+  - type: textarea
     id: article_body
     attributes:
       label: 本文
       description: 段落を分けて入力してください。
-      placeholder: ここに記事本文を書きます。
+      placeholder: |
+        ## はじめに
+        ニュースの要点と注目点
+
+        ## 背景
+        なぜ今これが重要なのか
+
+        ## 仕組みの解説
+        初心者向けの説明
+
+        ## 検証・考察
+        実際に確認した内容、手順、結果、限界
+
+        ## 今後の展望とまとめ
+        事実と予測を分けてまとめる
     validations:
       required: true
       max_length: 12000
