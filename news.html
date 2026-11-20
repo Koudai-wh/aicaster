@@ -434,7 +434,7 @@
 
   // Keep the homepage indexable while excluding thin, generated and personalized views.
   function syncRobots(r) {
-    var isSummaryArchive = /(?:^|\/)news(?:\.html)?\/?$/.test(location.pathname);
+    var isSummaryArchive = /(?:^|\/)(?:news(?:\.html)?|aicaster)\/?$/.test(location.pathname);
     var shouldNoindex = isSummaryArchive || r.name !== "top";
     var meta = document.querySelector('meta[name="robots"]');
     if (shouldNoindex && !meta) {

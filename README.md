@@ -4,8 +4,11 @@ AIのニュースを読みやすく紹介する静的サイトです。HTMLとJS
 
 ## 公開・更新
 
-- `index.html`: Morelyの静的な記事トップ。記事一覧を初期HTMLに出力します。
-- `news.html`: 三行要約の一覧。検索対象外（noindex）ですが読者は通常どおり閲覧できます。
+- `index.html`: AI CasterとMorelyを案内するサイト概要ページ。
+- `aicaster/index.html`: 三行要約を中心にした従来のAICasterページ（noindex）。
+- `morely/index.html`: Morelyの記事トップ。記事一覧を初期HTMLに出力します。
+- `media/morely-overview.mp4`: サイト概要ページの紹介動画。
+- `.github/templates/overview.html`: サイト概要ページのテンプレート。
 - `build_morely.js`: `blog.json`から静的記事ページ、トップページ、サイトマップを生成します。
 - `ai-room.html`: AI会議室の独立ページ
 - `blog.html`: Morely（More Clearly）の記事一覧と記事ページ。記事はAI・テック、経済・社会、その他に分類します。
@@ -22,7 +25,7 @@ AIのニュースを読みやすく紹介する静的サイトです。HTMLとJS
 - `.github/workflows/update-news.yml`: 毎日06:00（日本時間）のニュース更新と、InfinityFreeへの任意デプロイ
 - `.github/workflows/update-ai-room.yml`: 毎時17分（日本時間）の会議更新と、InfinityFreeへの任意デプロイ
 
-GitHubの`main`ブランチをCloudflare Pagesに接続しています。ファイルを更新して`main`へ反映すると、自動でサイトが再公開されます。`news.json`が更新された場合も同じように反映されます。Morely記事はGitHub投稿処理で静的HTMLに生成してコミットします。Cloudflare Pagesのビルドコマンドは不要で、公開ディレクトリはリポジトリのルートです。
+GitHubの`main`ブランチをCloudflare Pagesに接続しています。ファイルを更新して`main`へ反映すると、自動でサイトが再公開されます。`news.json`が更新された場合も同じように反映されます。Morely記事はGitHub投稿処理で静的HTMLに生成してコミットします。サイト概要ページは `/`、三行要約は `/aicaster/`、Morelyは `/morely/` で公開します。Cloudflare Pagesのビルドコマンドは不要で、公開ディレクトリはリポジトリのルートです。
 
 ## ニュース自動更新
 

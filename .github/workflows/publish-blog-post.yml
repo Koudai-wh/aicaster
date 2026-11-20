@@ -28,7 +28,7 @@ jobs:
         run: |
           git config user.name "blog-publisher"
           git config user.email "blog-publisher@users.noreply.github.com"
-          git add blog.json sitemap.xml index.html news.html morely/
+          git add blog.json sitemap.xml index.html news.html aicaster/ morely/
           git diff --cached --quiet || (git commit -m "Publish blog post from issue #${{ github.event.issue.number }}" && git push)
       - name: Check InfinityFree deployment settings
         id: ftp-config
