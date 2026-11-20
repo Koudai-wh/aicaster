@@ -3,7 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const ROOT = __dirname;
-const MODEL = process.env.GEMINI_MODEL || "gemini-4-hydrogen";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const API = "https://generativelanguage.googleapis.com/v1beta/interactions";
 const REQUIRED = ["はじめに", "背景", "仕組みの解説", "検証・考察", "今後の展望とまとめ"];
 const CATEGORY = ["AI・テック", "経済・社会", "その他"];

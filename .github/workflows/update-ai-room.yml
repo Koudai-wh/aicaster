@@ -24,7 +24,7 @@ jobs:
       - name: Create AI meeting room
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: gemini-4-hydrogen
+          GEMINI_MODEL: gemini-3.5-flash-lite
         run: node update_ai_room.js
       - name: Commit generated meeting
         run: |
