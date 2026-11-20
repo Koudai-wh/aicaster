@@ -21,8 +21,8 @@ jobs:
       - name: Fetch and summarize news
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          MAX_NEW_PER_RUN: 10
-          GEMINI_MODEL: gemini-3.5-flash-lite
+          MAX_NEW_PER_RUN: 5
+          GEMINI_MODEL: gemini-4-hydrogen
         run: |
           if [ -z "$GEMINI_API_KEY" ]; then
             echo "GEMINI_API_KEY is not set; skipping news update."

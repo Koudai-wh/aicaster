@@ -17,8 +17,8 @@ const crypto = require("crypto");
 const ROOT = __dirname;
 const FEEDS_PATH = path.join(ROOT, "feeds.json");
 const OUT_PATH = path.join(ROOT, "news.json");
-const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
-const MAX_NEW = Number(process.env.MAX_NEW_PER_RUN || 20);
+const MODEL = process.env.GEMINI_MODEL || "gemini-4-hydrogen";
+const MAX_NEW = Number(process.env.MAX_NEW_PER_RUN || 5);
 const MAX_KEEP = Number(process.env.MAX_KEEP || 200);
 const KEEP_DAYS = Number(process.env.KEEP_DAYS || 7);
 
@@ -81,7 +81,7 @@ function buildPrompt(it) {
     "",
     "カテゴリ: " + it.category,
     "見出し: " + it.title,
-    "概要: " + (it.description || "(なし)").slice(0, 1200),
+    "概要: " + (it.description || "(なし)").slice(0, 700),
   ].join("\n");
 }
 
@@ -91,7 +91,7 @@ async function callGemini(prompt, attempt = 0) {
     headers: { "content-type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY },
     body: JSON.stringify({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 500, responseMimeType: "application/json" },
+      generationConfig: { thinkingConfig: { thinkingLevel: "LOW" }, maxOutputTokens: 450, responseMimeType: "application/json" },
     }),
   });
   if ((res.status === 429 || res.status >= 500) && attempt < 2) {
