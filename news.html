@@ -184,6 +184,7 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script defer src="/site-nav.js"></script>
 </head>
 <body>
 
@@ -417,7 +418,7 @@
   function renderNav(r) {
     var links = [{ h: "#/", t: "トップ", on: r.name === "top" }].concat(CATS.map(function (c) {
       return { h: "#/cat/" + encodeURIComponent(c), t: c, on: r.name === "cat" && r.v === c };
-    }), [{ h: "ai-room.html", t: "AI会議室", on: false }, { h: "blog.html", t: "Morely", on: false }]);
+    }));
     $("nav").innerHTML = links.map(function (l) { return '<a href="' + l.h + '"' + (l.on ? ' class="active"' : "") + ">" + esc(l.t) + "</a>"; }).join("");
   }
 
