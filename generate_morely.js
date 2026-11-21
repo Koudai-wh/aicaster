@@ -7,9 +7,14 @@ const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const API = "https://generativelanguage.googleapis.com/v1beta/interactions";
 const REQUIRED = ["はじめに", "背景", "仕組みの解説", "検証・考察", "今後の展望とまとめ"];
 const CATEGORY = ["AI・テック", "経済・社会", "その他"];
+function tokyoDate() {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
 function slugify(s) {
   const ascii = String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 56);
-  return `${new Date().toISOString().slice(0,10)}-${ascii || "news-analysis"}`;
+  return `${tokyoDate()}-${ascii || "news-analysis"}`;
 }
 function extractText(data) {
   if (typeof data.output_text === "string") return data.output_text;
@@ -55,7 +60,11 @@ async function main() {
     signal: AbortSignal.timeout(180000),
     body: JSON.stringify({ model: MODEL, input, tools: [{ type: "google_search" }], generation_config: { thinking_level: "low", max_output_tokens: 4600 } }),
   });
-  if (!res.ok) throw new Error(`Gemini API ${res.status}: ${(await res.text()).slice(0, 500)}`);
+  if (!res.ok) {
+    const detail = (await res.text()).slice(0, 500);
+    if (res.status === 429) throw new Error(`Gemini API quota/rate limit (429). Check the Google AI Studio project quota and billing settings: ${detail}`);
+    throw new Error(`Gemini API ${res.status}: ${detail}`);
+  }
   const data = await res.json();
   if (data.status === "incomplete") throw new Error("Gemini returned an incomplete article");
   const raw = extractText(data);
@@ -73,7 +82,7 @@ async function main() {
   if (!title || priorTitles.has(title)) throw new Error("Missing or duplicate title; skipped");
   const slug = slugify(title);
   if (posts.some((p) => p.slug === slug)) throw new Error("Duplicate slug; skipped");
-  const now = new Date().toISOString().slice(0, 10);
+  const now = tokyoDate();
   posts.unshift({ slug, date: now, category: article.category, title, excerpt: String(article.excerpt || "").trim().slice(0, 300), sources: sources.slice(0, 8), body, morely: true, figureSteps: Array.isArray(article.figureSteps) ? article.figureSteps.slice(0,3).map(String) : ["公開資料を照合", "条件と仕組みを整理", "読者の判断材料へ"], imageCaption: String(article.imageCaption || "記事の論点を公開資料から整理した解説図") });
   fs.writeFileSync(path.join(ROOT, "blog.json"), JSON.stringify(posts, null, 2) + "\n");
   console.log(`Added Morely article: ${title} (${len} chars, ${sources.length} grounded sources)`);
